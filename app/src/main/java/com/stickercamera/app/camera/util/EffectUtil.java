@@ -17,7 +17,7 @@ import com.customview.MyHighlightView;
 import com.customview.MyImageViewDrawableOverlay;
 import com.customview.drawable.StickerDrawable;
 import com.github.skykai.stickercamera.R;
-import com.imagezoom.ImageViewTouch;
+import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import com.stickercamera.App;
 import com.stickercamera.AppConstants;
 import com.stickercamera.app.model.Addon;

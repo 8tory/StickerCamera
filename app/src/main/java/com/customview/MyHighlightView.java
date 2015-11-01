@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import com.customview.drawable.EditableDrawable;
 import com.customview.drawable.FeatherDrawable;
 import com.github.skykai.stickercamera.R;
-import com.imagezoom.ImageViewTouch;
+import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import com.stickercamera.App;
 import com.stickercamera.app.camera.util.Point2D;
 import com.stickercamera.app.camera.util.UIUtils;

@@ -24,7 +24,7 @@ import com.common.util.FileUtils;
 import com.common.util.IOUtil;
 import com.common.util.ImageUtils;
 import com.github.skykai.stickercamera.R;
-import com.imagezoom.ImageViewTouch;
+import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import com.stickercamera.App;
 import com.stickercamera.app.camera.CameraBaseActivity;
 

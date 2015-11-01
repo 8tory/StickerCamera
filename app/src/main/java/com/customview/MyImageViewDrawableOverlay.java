@@ -14,7 +14,7 @@ import android.view.ViewConfiguration;
 
 import com.customview.drawable.EditableDrawable;
 import com.customview.drawable.FeatherDrawable;
-import com.imagezoom.ImageViewTouch;
+import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 
 import java.util.ArrayList;
 import java.util.Iterator;
