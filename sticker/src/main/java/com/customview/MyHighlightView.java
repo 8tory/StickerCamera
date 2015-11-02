@@ -117,7 +117,7 @@ public class MyHighlightView implements EditableDrawable.OnSizeChange {
         }
     }
 
-    public MyHighlightView(ImageView context, int styleId, FeatherDrawable content) {
+    public MyHighlightView(ImageView context, FeatherDrawable content) {
         mContent = content;
         this.context = context.getContext();
 
@@ -130,7 +130,6 @@ public class MyHighlightView implements EditableDrawable.OnSizeChange {
 
         float minSize = -1f;
 
-        Log.i(LOG_TAG, "DrawableHighlightView. styleId: " + styleId);
         mMoveEnabled = true;
         mRotateEnabled = true;
         mScaleEnabled = true;

@@ -66,7 +66,7 @@ public class EffectUtil {
         drawable.setAntiAlias(true);
         drawable.setMinSize(30, 30);
 
-        final MyHighlightView hv = new MyHighlightView(processImage, R.style.AppTheme, drawable);
+        final MyHighlightView hv = new MyHighlightView(processImage, drawable);
         //设置贴纸padding
         hv.setPadding(10);
         hv.setOnDeleteClickListener(new MyHighlightView.OnDeleteClickListener() {
