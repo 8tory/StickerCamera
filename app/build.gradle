@@ -9,7 +9,7 @@ buildscript {
         classpath 'me.tatarka:gradle-retrolambda:3.1.0'
     }
 }
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'me.tatarka.retrolambda'
 
 repositories {
@@ -40,7 +40,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.github.skykai.stickercamera"
+        //applicationId "com.github.skykai.stickercamera"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
