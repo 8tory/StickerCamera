@@ -46,3 +46,5 @@ proguard.cfg
 .gradle
 build
 app/*/build
+
+.*.sw*

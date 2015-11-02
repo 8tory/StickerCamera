@@ -43,6 +43,7 @@ android {
         versionCode 1
         versionName "1.0"
         consumerProguardFiles 'sticker.pro'
+        consumerProguardFiles 'fastjson.pro'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
