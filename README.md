@@ -1,8 +1,8 @@
-# StickerCamera
+# StickerView
 
-This is an Android application with camera,picture cropping,collage sticking and tagging.
+Allow sticking and tagging.
 
-这是一款集成了相机,图片裁剪,给图片贴贴图打标签的APP。
+图片贴贴图打标签
 
 # Feature
 
@@ -52,14 +52,10 @@ This is an Android application with camera,picture cropping,collage sticking and
 - [PagerSlidingTabStrip](https://github.com/astuetz/PagerSlidingTabStrip)
 - [android-common](https://github.com/Trinea/android-common)
 
-
 # Contributors
 
 - [ouyezi](https://github.com/ouyezi)
 - [Skykai521](https://github.com/Skykai521)
-
-# Apk Demo
-Change screenshot/StickerCamera.zip to StickerCamera.apk
 
 # Contact Me
 
@@ -68,6 +64,7 @@ Change screenshot/StickerCamera.zip to StickerCamera.apk
 
 # License
 ```
+Copyright 2015 8tory, Inc.
 Copyright 2015 DaQingkai
 
 Licensed under the Apache License, Version 2.0 (the "License");
