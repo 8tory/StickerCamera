@@ -152,11 +152,14 @@ public class StickerManager {
     }
 
     public void addSticker() {
-        addSticker(0);
+        addSticker(R.drawable.fb_smile);
     }
 
-    public void addSticker(int id) {
-        Addon sticker = EffectUtil.addonList.get(id);
+    public void addSticker(int drawableId) {
+        addSticker(new Addon(drawableId));
+    }
+
+    public void addSticker(Addon sticker) {
         EffectUtil.addStickerImage(mImageView, parent.getContext(), sticker, new EffectUtil.StickerCallback() {
             @Override
             public void onRemoveSticker(Addon sticker) {

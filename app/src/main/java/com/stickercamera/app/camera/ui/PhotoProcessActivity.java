@@ -282,7 +282,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             @Override
             public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> adapterView,
                                     View view, int position, long offset) {
-                mStickerManager.addSticker(position);
+                mStickerManager.addSticker(EffectUtil.addonList.get(position));
             }
         });
         setCurrentBtn(stickerBtn);

@@ -35,6 +35,7 @@ public class EffectUtil {
     private static List<MyHighlightView> hightlistViews = new CopyOnWriteArrayList<MyHighlightView>();
 
     static {
+        addonList.add(new Addon(R.drawable.fb_smile));
         addonList.add(new Addon(R.drawable.sticker1));
         addonList.add(new Addon(R.drawable.sticker2));
         addonList.add(new Addon(R.drawable.sticker3));
