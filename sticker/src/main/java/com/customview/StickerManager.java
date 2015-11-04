@@ -63,13 +63,6 @@ public class StickerManager {
 
     private LabelSelector labelSelector;
 
-    //当前选择底部按钮
-    private TextView currentBtn;
-    //当前图片
-    private Bitmap currentBitmap;
-    //用于预览的小图片
-    private Bitmap smallImageBackgroud;
-    //小白点标签
     private LabelView emptyLabelView;
 
     private List<LabelView> labels = new ArrayList<LabelView>();
@@ -181,6 +174,11 @@ public class StickerManager {
         emptyLabelView.setVisibility(View.GONE);
     }
 
+    public void focus() {
+        unhide();
+        emptyLabelView.setVisibility(View.VISIBLE);
+    }
+
     public void unfocus() {
         labelSelector.hide();
         emptyLabelView.setVisibility(View.INVISIBLE);
@@ -200,6 +198,19 @@ public class StickerManager {
 
     public List<LabelView> labels() {
         return labels;
+    }
+
+    public void unhide() {
+        for (LabelView v : labels) {
+            v.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void hide() {
+        for (LabelView v : labels) {
+            v.setVisibility(View.INVISIBLE);
+        }
+        emptyLabelView.setVisibility(View.INVISIBLE);
     }
 
     public void addLabel(TagItem tagItem) {
