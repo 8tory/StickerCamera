@@ -159,7 +159,11 @@ public class StickerManager {
     }
 
     public void addSticker() {
-        Addon sticker = EffectUtil.addonList.get(0);
+        addSticker(0);
+    }
+
+    public void addSticker(int id) {
+        Addon sticker = EffectUtil.addonList.get(id);
         EffectUtil.addStickerImage(mImageView, parent.getContext(), sticker, new EffectUtil.StickerCallback() {
             @Override
             public void onRemoveSticker(Addon sticker) {
@@ -168,11 +172,37 @@ public class StickerManager {
         });
     }
 
+    public MyImageViewDrawableOverlay imageView() {
+        return mImageView;
+    }
+
+    public void inactive() {
+        labelSelector.hide();
+        emptyLabelView.setVisibility(View.GONE);
+    }
+
+    public void unfocus() {
+        labelSelector.hide();
+        emptyLabelView.setVisibility(View.INVISIBLE);
+    }
+
     public void addLabel() {
         labelSelector.showToTop();
     }
 
-    private void addLabel(TagItem tagItem) {
+    public void hideLabelSelector() {
+        labelSelector.hide();
+    }
+
+    public LabelSelector labelSelector() {
+        return labelSelector;
+    }
+
+    public List<LabelView> labels() {
+        return labels;
+    }
+
+    public void addLabel(TagItem tagItem) {
         labelSelector.hide();
         emptyLabelView.setVisibility(View.INVISIBLE);
 

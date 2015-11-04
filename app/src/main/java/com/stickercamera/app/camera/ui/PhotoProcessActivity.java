@@ -29,6 +29,8 @@ import com.customview.LabelSelector;
 import com.customview.LabelView;
 import com.customview.MyHighlightView;
 import com.customview.MyImageViewDrawableOverlay;
+import com.customview.StickerManager;
+
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import com.stickercamera.App;
 import com.stickercamera.AppConstants;
@@ -83,8 +85,6 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     HListView bottomToolBar;
     @InjectView(R.id.toolbar_area)
     ViewGroup toolArea;
-    private MyImageViewDrawableOverlay mImageView;
-    private LabelSelector labelSelector;
 
     //当前选择底部按钮
     private TextView currentBtn;
@@ -92,13 +92,11 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     private Bitmap currentBitmap;
     //用于预览的小图片
     private Bitmap smallImageBackgroud;
-    //小白点标签
-    private LabelView emptyLabelView;
-
-    private List<LabelView> labels = new ArrayList<LabelView>();
 
     //标签区域
     private View commonLabelArea;
+
+    private StickerManager mStickerManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,32 +125,14 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
     }
     private void initView() {
-        //添加贴纸水印的画布
-        View overlay = LayoutInflater.from(PhotoProcessActivity.this).inflate(
-                R.layout.view_drawable_overlay, null);
-        mImageView = (MyImageViewDrawableOverlay) overlay.findViewById(R.id.drawable_overlay);
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(DistanceUtil.getInstance(this).getScreenWidth(),
-                DistanceUtil.getInstance(this).getScreenWidth());
-        mImageView.setLayoutParams(params);
-        overlay.setLayoutParams(params);
-        drawArea.addView(overlay);
+        mStickerManager = new StickerManager(drawArea);
+
         //添加标签选择器
         RelativeLayout.LayoutParams rparams = new RelativeLayout.LayoutParams(DistanceUtil.getInstance(this).getScreenWidth(), DistanceUtil.getInstance(this).getScreenWidth());
-        labelSelector = new LabelSelector(this);
-        labelSelector.setLayoutParams(rparams);
-        drawArea.addView(labelSelector);
-        labelSelector.hide();
 
         //初始化滤镜图片
         mGPUImageView.setLayoutParams(rparams);
 
-
-        //初始化空白标签
-        emptyLabelView = new LabelView(this);
-        emptyLabelView.setEmpty();
-        EffectUtil.addLabelEditable(mImageView, drawArea, emptyLabelView,
-                mImageView.getWidth() / 2, mImageView.getWidth() / 2);
-        emptyLabelView.setVisibility(View.INVISIBLE);
 
         //初始化推荐标签栏
         commonLabelArea = LayoutInflater.from(PhotoProcessActivity.this).inflate(
@@ -169,8 +149,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                 return;
             }
             bottomToolBar.setVisibility(View.VISIBLE);
-            labelSelector.hide();
-            emptyLabelView.setVisibility(View.GONE);
+            mStickerManager.inactive();
             commonLabelArea.setVisibility(View.GONE);
             initStickerToolBar();
         });
@@ -180,8 +159,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                 return;
             }
             bottomToolBar.setVisibility(View.VISIBLE);
-            labelSelector.hide();
-            emptyLabelView.setVisibility(View.INVISIBLE);
+            mStickerManager.unfocus();
             commonLabelArea.setVisibility(View.GONE);
             initFilterToolBar();
         });
@@ -190,33 +168,18 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                 return;
             }
             bottomToolBar.setVisibility(View.GONE);
-            labelSelector.showToTop();
+            mStickerManager.addLabel();
             commonLabelArea.setVisibility(View.VISIBLE);
 
         });
-        labelSelector.setTxtClicked(v -> {
+
+        mStickerManager.labelSelector().setTxtClicked(v -> {
             EditTextActivity.openTextEdit(PhotoProcessActivity.this,"",8, AppConstants.ACTION_EDIT_LABEL);
         });
-        labelSelector.setAddrClicked(v -> {
+        mStickerManager.labelSelector().setAddrClicked(v -> {
             EditTextActivity.openTextEdit(PhotoProcessActivity.this,"",8, AppConstants.ACTION_EDIT_LABEL_POI);
 
         });
-        mImageView.setOnDrawableEventListener(wpEditListener);
-        mImageView.setSingleTapListener(()->{
-                emptyLabelView.updateLocation((int) mImageView.getmLastMotionScrollX(),
-                        (int) mImageView.getmLastMotionScrollY());
-                emptyLabelView.setVisibility(View.VISIBLE);
-
-                labelSelector.showToTop();
-                drawArea.postInvalidate();
-        });
-        labelSelector.setOnClickListener(v -> {
-            labelSelector.hide();
-            emptyLabelView.updateLocation((int) labelSelector.getmLastTouchX(),
-                    (int) labelSelector.getmLastTouchY());
-            emptyLabelView.setVisibility(View.VISIBLE);
-        });
-
 
         titleBar.setRightBtnOnclickListener(v -> {
             savePicture();
@@ -226,10 +189,10 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     //保存图片
     private void savePicture(){
         //加滤镜
-        final Bitmap newBitmap = Bitmap.createBitmap(mImageView.getWidth(), mImageView.getHeight(),
+        final Bitmap newBitmap = Bitmap.createBitmap(mStickerManager.imageView().getWidth(), mStickerManager.imageView().getHeight(),
                 Bitmap.Config.ARGB_8888);
         Canvas cv = new Canvas(newBitmap);
-        RectF dst = new RectF(0, 0, mImageView.getWidth(), mImageView.getHeight());
+        RectF dst = new RectF(0, 0, mStickerManager.imageView().getWidth(), mStickerManager.imageView().getHeight());
         try {
             cv.drawBitmap(mGPUImageView.capture(), null, dst, null);
         } catch (InterruptedException e) {
@@ -237,7 +200,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             cv.drawBitmap(currentBitmap, null, dst, null);
         }
         //加贴纸水印
-        EffectUtil.applyOnSave(cv, mImageView);
+        EffectUtil.applyOnSave(cv, mStickerManager.imageView());
 
         new SavePicToFileTask().execute(newBitmap);
     }
@@ -277,7 +240,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             //将照片信息保存至sharedPreference
             //保存标签信息
             List<TagItem> tagInfoList = new ArrayList<TagItem>();
-            for (LabelView label : labels) {
+            for (LabelView label : mStickerManager.labels()) {
                 tagInfoList.add(label.getTagInfo());
             }
 
@@ -292,42 +255,8 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     public void tagClick(View v){
         TextView textView = (TextView)v;
         TagItem tagItem = new TagItem(AppConstants.POST_TYPE_TAG,textView.getText().toString());
-        addLabel(tagItem);
+        mStickerManager.addLabel(tagItem);
     }
-
-    private MyImageViewDrawableOverlay.OnDrawableEventListener wpEditListener   = new MyImageViewDrawableOverlay.OnDrawableEventListener() {
-        @Override
-        public void onMove(MyHighlightView view) {
-        }
-
-        @Override
-        public void onFocusChange(MyHighlightView newFocus, MyHighlightView oldFocus) {
-        }
-
-        @Override
-        public void onDown(MyHighlightView view) {
-
-        }
-
-        @Override
-        public void onClick(MyHighlightView view) {
-            labelSelector.hide();
-        }
-
-        @Override
-        public void onClick(final LabelView label) {
-            if (label.equals(emptyLabelView)) {
-                return;
-            }
-            alert("温馨提示", "是否需要删除该标签！", "确定", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    EffectUtil.removeLabelEditable(mImageView, drawArea, label);
-                    labels.remove(label);
-                }
-            }, "取消", null);
-        }
-    };
 
     private boolean setCurrentBtn(TextView btn) {
         if (currentBtn == null) {
@@ -351,17 +280,9 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0,
-                                    View arg1, int arg2, long arg3) {
-                labelSelector.hide();
-                Addon sticker = EffectUtil.addonList.get(arg2);
-                EffectUtil.addStickerImage(mImageView, PhotoProcessActivity.this, sticker,
-                        new EffectUtil.StickerCallback() {
-                            @Override
-                            public void onRemoveSticker(Addon sticker) {
-                                labelSelector.hide();
-                            }
-                        });
+            public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> adapterView,
+                                    View view, int position, long offset) {
+                mStickerManager.addSticker(position);
             }
         });
         setCurrentBtn(stickerBtn);
@@ -375,12 +296,12 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         bottomToolBar.setAdapter(adapter);
         bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                labelSelector.hide();
-                if (adapter.getSelectFilter() != arg2) {
-                    adapter.setSelectFilter(arg2);
+            public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> adapterView, View view, int position, long offset) {
+                mStickerManager.hideLabelSelector();
+                if (adapter.getSelectFilter() != position) {
+                    adapter.setSelectFilter(position);
                     GPUImageFilter filter = GPUImageFilterTools.createFilterForType(
-                            PhotoProcessActivity.this, filters.get(arg2).getType());
+                            PhotoProcessActivity.this, filters.get(position).getType());
                     mGPUImageView.setFilter(filter);
                     GPUImageFilterTools.FilterAdjuster mFilterAdjuster = new GPUImageFilterTools.FilterAdjuster(filter);
                     //可调节颜色的滤镜
@@ -392,41 +313,20 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         });
     }
 
-    //添加标签
-    private void addLabel(TagItem tagItem) {
-        labelSelector.hide();
-        emptyLabelView.setVisibility(View.INVISIBLE);
-        if (labels.size() >= 5) {
-            alert("温馨提示", "您只能添加5个标签！", "确定", null, null, null, true);
-        } else {
-            int left = emptyLabelView.getLeft();
-            int top = emptyLabelView.getTop();
-            if (labels.size() == 0 && left == 0 && top == 0) {
-                left = mImageView.getWidth() / 2 - 10;
-                top = mImageView.getWidth() / 2;
-            }
-            LabelView label = new LabelView(PhotoProcessActivity.this);
-            label.init(tagItem);
-            EffectUtil.addLabelEditable(mImageView, drawArea, label, left, top);
-            labels.add(label);
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        labelSelector.hide();
         super.onActivityResult(requestCode, resultCode, data);
         if (AppConstants.ACTION_EDIT_LABEL== requestCode && data != null) {
             String text = data.getStringExtra(AppConstants.PARAM_EDIT_TEXT);
             if(StringUtils.isNotEmpty(text)){
                 TagItem tagItem = new TagItem(AppConstants.POST_TYPE_TAG,text);
-                addLabel(tagItem);
+                mStickerManager.addLabel(tagItem);
             }
         }else if(AppConstants.ACTION_EDIT_LABEL_POI== requestCode && data != null){
             String text = data.getStringExtra(AppConstants.PARAM_EDIT_TEXT);
             if(StringUtils.isNotEmpty(text)){
                 TagItem tagItem = new TagItem(AppConstants.POST_TYPE_POI,text);
-                addLabel(tagItem);
+                mStickerManager.addLabel(tagItem);
             }
         }
     }
