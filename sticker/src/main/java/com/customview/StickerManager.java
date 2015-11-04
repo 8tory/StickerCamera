@@ -174,14 +174,21 @@ public class StickerManager {
         emptyLabelView.setVisibility(View.GONE);
     }
 
-    public void focus() {
-        unhide();
-        emptyLabelView.setVisibility(View.VISIBLE);
-    }
-
     public void unfocus() {
         labelSelector.hide();
         emptyLabelView.setVisibility(View.INVISIBLE);
+    }
+
+    public void onPause() {
+        mImageView.setVisibility(View.INVISIBLE);
+        emptyLabelView.setVisibility(View.INVISIBLE);
+        hide();
+    }
+
+    public void onResume() {
+        unhide();
+        mImageView.setVisibility(View.VISIBLE);
+        emptyLabelView.setVisibility(View.VISIBLE);
     }
 
     public void addLabel() {
