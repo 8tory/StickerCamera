@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.github.skykai.stickercamera.R;
@@ -17,8 +16,8 @@ import com.github.skykai.stickercamera.R;
  */
 public class LabelSelector extends LinearLayout {
 
-    private ImageView txtLabelBtn;
-    private ImageView addrLabelBtn;
+    private View txtLabelBtn;
+    private View addrLabelBtn;
 
     public LabelSelector(Context context) {
         this(context,null);
@@ -27,8 +26,8 @@ public class LabelSelector extends LinearLayout {
     public LabelSelector(Context context, AttributeSet attr) {
         super(context, attr);
         LayoutInflater.from(context).inflate(R.layout.view_label_layout, this);
-        txtLabelBtn = (ImageView) findViewById(R.id.iv_tag_tip);
-        addrLabelBtn = (ImageView) findViewById(R.id.iv_tag_address);
+        txtLabelBtn = findViewById(R.id.iv_tag_tip);
+        addrLabelBtn = findViewById(R.id.iv_tag_address);
     }
 
     public void setTxtClicked(OnClickListener listener) {

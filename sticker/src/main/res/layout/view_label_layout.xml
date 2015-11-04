@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/label_selector"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -7,18 +8,38 @@
     android:gravity="center"
     android:orientation="horizontal" >
 
-    <ImageView
+    <mehdi.sakout.fancybuttons.FancyButton
         android:id="@+id/iv_tag_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/tip" />
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        app:fb_defaultColor="#d333"
+        app:fb_focusColor="#e666"
+        app:fb_iconPosition="left"
+        app:fb_radius="30dp"
+        app:fb_fontIconResource="&#xf27a;"
+        app:fb_text="@string/comment"
+        app:fb_textColor="#FFFFFF"
+        />
 
-    <ImageView
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:layout_marginLeft="20dp"
         android:id="@+id/iv_tag_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:padding="10.0dip"
-        android:src="@drawable/position" />
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        app:fb_defaultColor="#d333"
+        app:fb_focusColor="#e666"
+        app:fb_iconPosition="left"
+        app:fb_radius="30dp"
+        app:fb_fontIconResource="&#xf041;"
+        app:fb_text="@string/place"
+        app:fb_textColor="#FFFFFF" />
 
 </LinearLayout>

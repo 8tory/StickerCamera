@@ -25,6 +25,7 @@ dependencies {
     compile 'it.sephiroth.android.library.horizontallistview:hlistview:1.2.2'
     compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.3.0'
     compile 'com.github.yongjhih:ImageViewZoom:-SNAPSHOT'
+    compile 'com.github.medyo:fancybuttons:1.5@aar'
 }
 
 android {
