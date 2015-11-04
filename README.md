@@ -1,4 +1,4 @@
-# StickerView
+# StickerCamera
 
 Allow sticking and tagging.
 
@@ -49,6 +49,19 @@ public void addSticker() {
 @OnClick(R.id.bubble)
 public void addBubble() {
     mStickerManager.addLabel();
+}
+```
+
+## Installation
+
+```gradle
+repositories {
+    // ...
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    compile 'com.github.yongjhih:StickerCamera:-SNAPSHOT'
 }
 ```
 
