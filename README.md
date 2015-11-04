@@ -4,7 +4,7 @@ Allow sticking and tagging.
 
 图片贴贴图打标签
 
-# Feature
+## Feature
 
 - Achieve the function of camera.
 - Achieve the function of photo cropping.
@@ -25,7 +25,7 @@ Allow sticking and tagging.
 
   (Translation powered by Amy)
 
-# ScreenShot
+## ScreenShot
 
 <img src="./screenshot/Screenshot_01.gif" width="30%" height="30%">
 <img src="./screenshot/Screenshot_2015-07-19-11-23-22.png" width="30%" height="30%">
@@ -36,8 +36,23 @@ Allow sticking and tagging.
 <img src="./screenshot/Screenshot_2015-07-19-11-23-00.png" width="30%" height="30%">
 <img src="./screenshot/Screenshot_2015-07-19-11-23-04.png" width="30%" height="30%">
 
+## Usage
 
-# Thanks
+```java
+mStickerManager = new StickerManager(parent);
+
+@OnClick(R.id.sticker)
+public void addSticker() {
+    mStickerManager.addSticker();
+}
+
+@OnClick(R.id.bubble)
+public void addBubble() {
+    mStickerManager.addLabel();
+}
+```
+
+## Thanks
 
 - [Gpu-image](https://github.com/CyberAgent/android-gpuimage)
 - [Android-Universal-Image-Loader](https://github.com/nostra13/Android-Universal-Image-Loader)
@@ -52,17 +67,17 @@ Allow sticking and tagging.
 - [PagerSlidingTabStrip](https://github.com/astuetz/PagerSlidingTabStrip)
 - [android-common](https://github.com/Trinea/android-common)
 
-# Contributors
+## Contributors
 
 - [ouyezi](https://github.com/ouyezi)
 - [Skykai521](https://github.com/Skykai521)
 
-# Contact Me
+## Contact Me
 
 - Weibo: http://weibo.com/2030683111
 - Email: 1132234509@qq.com
 
-# License
+## License
 ```
 Copyright 2015 8tory, Inc.
 Copyright 2015 DaQingkai
