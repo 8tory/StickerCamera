@@ -172,6 +172,12 @@ public class StickerManager {
         return mImageView;
     }
 
+    // TODO highlight() { setSelectedHighlightView(getLastHighlightView())}
+
+    public void offHighlight() {
+        mImageView.setSelectedHighlightView(null);
+    }
+
     public void inactive() {
         labelSelector.hide();
         emptyLabelView.setVisibility(View.GONE);
