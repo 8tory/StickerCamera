@@ -55,6 +55,8 @@ import java.util.Date;
 import java.util.List;
 import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
+import com.afollestad.materialdialogs.MaterialDialog;
+import android.text.InputType;
 
 public class StickerManager {
     private ViewGroup parent;
@@ -98,12 +100,30 @@ public class StickerManager {
         emptyLabelView.setVisibility(View.INVISIBLE);
 
         labelSelector.setTxtClicked(v -> {
-            TagItem tagItem = new TagItem(0 , "yo");
-            addLabel(tagItem);
+            new MaterialDialog.Builder(parent.getContext())
+                .title(R.string.comment)
+                //.inputRangeRes(2, 20, R.color.material_red_500)
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input("Say something..", "", new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        TagItem tagItem = new TagItem(0, input.toString());
+                        addLabel(tagItem);
+                    }
+                }).show();
         });
         labelSelector.setAddrClicked(v -> {
-            TagItem tagItem = new TagItem(1 , "Taipei");
-            addLabel(tagItem);
+            new MaterialDialog.Builder(parent.getContext())
+                .title(R.string.place)
+                //.inputRangeRes(2, 20, R.color.material_red_500)
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input("Place", "", new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        TagItem tagItem = new TagItem(1, input.toString());
+                        addLabel(tagItem);
+                    }
+                }).show();
         });
 
         mImageView.setOnDrawableEventListener(new MyImageViewDrawableOverlay.OnDrawableEventListener() {

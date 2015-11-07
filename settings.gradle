@@ -1,2 +1,4 @@
 include ':app'
 include ':sticker'
+//include ':material-dialogs'
+//project(':material-dialogs').projectDir = new File(settingsDir, '../material-dialogs/core')
