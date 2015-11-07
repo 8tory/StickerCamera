@@ -2,6 +2,8 @@ package com.customview;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -11,7 +13,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
-
+import com.customview.drawable.StickerDrawable;
 import com.customview.drawable.EditableDrawable;
 import com.customview.drawable.FeatherDrawable;
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
@@ -20,7 +22,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
+import com.stickercamera.app.camera.util.MatrixUtils;
+import android.view.View;
+import android.view.ViewGroup;
+import com.stickercamera.app.model.Addon;
 
 public class MyImageViewDrawableOverlay extends ImageViewTouch {
 
@@ -629,6 +634,148 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
         if (mDrawableListener != null) {
             mDrawableListener.onFocusChange(newView, oldView);
         }
+    }
+
+    public void clear() {
+        clearOverlays();
+    }
+
+    // Move to StickerManager, independent model.Addon out of Overlay
+    //删除贴纸的回调接口
+    public static interface StickerCallback {
+        public void onRemoveSticker(Addon sticker);
+    }
+
+    public void removeSticker(MyHighlightView hv) {
+        removeHightlightView(hv);
+        invalidate();
+    }
+
+    // Move to StickerManager, independent model.Addon out of Overlay
+    public MyHighlightView addStickerImage(final Addon sticker, final StickerCallback callback) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), sticker.getId());
+        if (bitmap == null) {
+            return null;
+        }
+        StickerDrawable drawable = new StickerDrawable(getContext().getResources(), bitmap);
+        drawable.setAntiAlias(true);
+        drawable.setMinSize(30, 30);
+
+        final MyHighlightView hv = new MyHighlightView(this, drawable);
+        //设置贴纸padding
+        hv.setPadding(10);
+        hv.setOnDeleteClickListener(new MyHighlightView.OnDeleteClickListener() {
+
+            @Override
+            public void onDeleteClick() {
+                removeSticker(hv);
+                callback.onRemoveSticker(sticker);
+            }
+        });
+
+        Matrix imageMatrix = getImageViewMatrix();
+
+        int cropWidth, cropHeight;
+        int x, y;
+
+        final int width = getWidth();
+        final int height = getHeight();
+
+        // width/height of the sticker
+        cropWidth = (int) drawable.getCurrentWidth();
+        cropHeight = (int) drawable.getCurrentHeight();
+
+        final int cropSize = Math.max(cropWidth, cropHeight);
+        final int screenSize = Math.min(getWidth(), getHeight());
+        RectF positionRect = null;
+        if (cropSize > screenSize) {
+            float ratio;
+            float widthRatio = (float) getWidth() / cropWidth;
+            float heightRatio = (float) getHeight() / cropHeight;
+
+            if (widthRatio < heightRatio) {
+                ratio = widthRatio;
+            } else {
+                ratio = heightRatio;
+            }
+
+            cropWidth = (int) ((float) cropWidth * (ratio / 2));
+            cropHeight = (int) ((float) cropHeight * (ratio / 2));
+
+            int w = getWidth();
+            int h = getHeight();
+            positionRect = new RectF(w / 2 - cropWidth / 2, h / 2 - cropHeight / 2,
+                    w / 2 + cropWidth / 2, h / 2 + cropHeight / 2);
+
+            positionRect.inset((positionRect.width() - cropWidth) / 2,
+                    (positionRect.height() - cropHeight) / 2);
+        }
+
+        if (positionRect != null) {
+            x = (int) positionRect.left;
+            y = (int) positionRect.top;
+
+        } else {
+            x = (width - cropWidth) / 2;
+            y = (height - cropHeight) / 2;
+        }
+
+        Matrix matrix = new Matrix(imageMatrix);
+        matrix.invert(matrix);
+
+        float[] pts = new float[] { x, y, x + cropWidth, y + cropHeight };
+        MatrixUtils.mapPoints(matrix, pts);
+
+        RectF cropRect = new RectF(pts[0], pts[1], pts[2], pts[3]);
+        Rect imageRect = new Rect(0, 0, width, height);
+
+        hv.setup(getContext(), imageMatrix, imageRect, cropRect, false);
+
+        addHighlightView(hv);
+        setSelectedHighlightView(hv);
+        return hv;
+    }
+
+    //----添加标签-----
+    public void addLabelEditable(ViewGroup container, LabelView label, int left, int top) {
+        addLabel(container, label, left, top);
+        addLabel2Overlay(label);
+    }
+
+    private void addLabel(ViewGroup container, LabelView label, int left, int top) {
+        label.addTo(container, left, top);
+    }
+
+    public void removeLabelEditable(ViewGroup container, LabelView label) {
+        container.removeView(label);
+        removeLabel(label);
+    }
+
+    /**
+     * 使标签在Overlay上可以移动
+     * @param overlay
+     * @param label
+     */
+    private void addLabel2Overlay(final LabelView label) {
+        //添加事件，触摸生效
+        addLabel(label);
+        label.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:// 手指按下时
+                        setCurrentLabel(label, event.getRawX(), event.getRawY());
+                        return false;
+                    default:
+                        return false;
+                }
+            }
+        });
+    }
+
+    // TODO ImmutableList
+    public List<MyHighlightView> highlightViews() {
+        return mOverlayViews;
     }
 
 }

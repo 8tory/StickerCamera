@@ -42,7 +42,6 @@ import com.stickercamera.app.camera.adapter.FilterAdapter;
 import com.stickercamera.app.camera.adapter.StickerToolAdapter;
 import com.stickercamera.app.camera.effect.FilterEffect;
 import com.stickercamera.app.camera.EffectService;
-import com.stickercamera.app.camera.util.EffectUtil;
 import com.stickercamera.app.camera.util.GPUImageFilterTools;
 import com.stickercamera.AppConstants;
 import com.stickercamera.app.model.Addon;
@@ -96,8 +95,7 @@ public class StickerManager {
         //初始化空白标签
         emptyLabelView = new LabelView(parent.getContext());
         emptyLabelView.setEmpty();
-        EffectUtil.addLabelEditable(mImageView, parent, emptyLabelView,
-                mImageView.getWidth() / 2, mImageView.getWidth() / 2);
+        mImageView.addLabelEditable(parent, emptyLabelView, mImageView.getWidth() / 2, mImageView.getWidth() / 2);
         emptyLabelView.setVisibility(View.INVISIBLE);
 
         labelSelector.setTxtClicked(v -> {
@@ -144,7 +142,7 @@ public class StickerManager {
             @Override
             public void onClick(MyHighlightView view) {
                 labelSelector.hide();
-                EffectUtil.removeStickerImage(mImageView, parent.getContext(), view);
+                //mImageView.removeSticker(view); // deleteIcon instead
             }
 
             @Override
@@ -152,7 +150,7 @@ public class StickerManager {
                 if (label.equals(emptyLabelView)) {
                     return;
                 }
-                EffectUtil.removeLabelEditable(mImageView, parent, label);
+                mImageView.removeLabelEditable(parent, label);
                 labels.remove(label);
             }
         });
@@ -182,7 +180,7 @@ public class StickerManager {
     }
 
     public void addSticker(Addon sticker) {
-        EffectUtil.addStickerImage(mImageView, parent.getContext(), sticker, new EffectUtil.StickerCallback() {
+        mImageView.addStickerImage(sticker, new MyImageViewDrawableOverlay.StickerCallback() {
             @Override
             public void onRemoveSticker(Addon sticker) {
                 labelSelector.hide();
@@ -263,7 +261,7 @@ public class StickerManager {
         }
         LabelView label = new LabelView(parent.getContext());
         label.init(tagItem);
-        EffectUtil.addLabelEditable(mImageView, parent, label, left, top);
+        mImageView.addLabelEditable(parent, label, left, top);
         labels.add(label);
     }
 
