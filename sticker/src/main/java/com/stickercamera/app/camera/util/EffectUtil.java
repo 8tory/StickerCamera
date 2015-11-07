@@ -55,6 +55,13 @@ public class EffectUtil {
         public void onRemoveSticker(Addon sticker);
     }
 
+    // TODO move hightlistViews into Overlay
+    public static MyHighlightView removeStickerImage(final ImageViewTouch processImage, Context context, MyHighlightView hv) {
+        ((MyImageViewDrawableOverlay) processImage).removeHightlightView(hv);
+        hightlistViews.remove(hv);
+        ((MyImageViewDrawableOverlay) processImage).invalidate();
+    }
+
     //添加贴纸
     public static MyHighlightView addStickerImage(final ImageViewTouch processImage,
                                                   Context context, final Addon sticker,
@@ -198,15 +205,14 @@ public class EffectUtil {
         });
     }
 
-
     //添加水印
-    public static void applyOnSave(Canvas mCanvas, ImageViewTouch processImage) {
+    public static void applyOnSave(Canvas canvas, ImageViewTouch processImage) {
         for (MyHighlightView view : hightlistViews) {
-            applyOnSave(mCanvas, processImage, view);
+            applyOnSave(canvas, processImage, view);
         }
     }
 
-    private static void applyOnSave(Canvas mCanvas, ImageViewTouch processImage,MyHighlightView view) {
+    private static void applyOnSave(Canvas canvas, ImageViewTouch processImage,MyHighlightView view) {
 
         if (view != null && view.getContent() instanceof StickerDrawable) {
 
@@ -219,13 +225,13 @@ public class EffectUtil {
             Matrix matrix = new Matrix(processImage.getImageMatrix());
             if (!matrix.invert(matrix)) {
             }
-            int saveCount = mCanvas.save(Canvas.MATRIX_SAVE_FLAG);
-            mCanvas.concat(rotateMatrix);
+            int saveCount = canvas.save(Canvas.MATRIX_SAVE_FLAG);
+            canvas.concat(rotateMatrix);
 
             stickerDrawable.setDropShadow(false);
             view.getContent().setBounds(rect);
-            view.getContent().draw(mCanvas);
-            mCanvas.restoreToCount(saveCount);
+            view.getContent().draw(canvas);
+            canvas.restoreToCount(saveCount);
         }
     }
 

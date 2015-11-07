@@ -67,6 +67,7 @@ public class StickerManager {
 
     private LabelView emptyLabelView;
 
+    // TODO merge into Overlay
     private List<LabelView> labels = new ArrayList<LabelView>();
 
     //标签区域
@@ -143,6 +144,7 @@ public class StickerManager {
             @Override
             public void onClick(MyHighlightView view) {
                 labelSelector.hide();
+                EffectUtil.removeStickerImage(mImageView, parent.getContext(), view);
             }
 
             @Override

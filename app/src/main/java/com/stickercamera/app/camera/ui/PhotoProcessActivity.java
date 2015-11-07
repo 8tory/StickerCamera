@@ -103,7 +103,6 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_process);
         ButterKnife.inject(this);
-        EffectUtil.clear();
         initView();
         initEvent();
         initStickerToolBar();
