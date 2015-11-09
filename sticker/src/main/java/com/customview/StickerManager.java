@@ -211,6 +211,7 @@ public class StickerManager {
 
     public void offHighlight() {
         mImageView.setSelectedHighlightView(null);
+        mImageView.clearAnimation();
     }
 
     public void inactive() {

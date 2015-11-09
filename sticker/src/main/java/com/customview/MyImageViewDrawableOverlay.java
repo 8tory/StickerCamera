@@ -95,6 +95,18 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
         labels.remove(label);
     }
 
+    public void clearAnimation() {
+        for (View v : labels) {
+            v.clearAnimation();
+        }
+    }
+
+    public void wave() {
+        for (LabelView label : labels) {
+            label.wave();
+        }
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (currentLabel != null) {
