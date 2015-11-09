@@ -159,6 +159,7 @@ public class StickerManager {
             emptyLabelView.updateLocation((int) mImageView.getmLastMotionScrollX(),
                     (int) mImageView.getmLastMotionScrollY());
             emptyLabelView.setVisibility(View.VISIBLE);
+            emptyLabelView.wave();
 
             //labelSelector.showToTop();
             parent.postInvalidate();
@@ -211,6 +212,8 @@ public class StickerManager {
 
     public void offHighlight() {
         mImageView.setSelectedHighlightView(null);
+        emptyLabelView.clearAnimation();
+        labelSelector.hide();
         //mImageView.clearAnimation();
     }
 
