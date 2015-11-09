@@ -228,6 +228,7 @@ public class StickerManager {
         mImageView.setVisibility(View.INVISIBLE);
         emptyLabelView.setVisibility(View.INVISIBLE);
         hide();
+        labelSelector.hide();
     }
 
     public void onResume() {
