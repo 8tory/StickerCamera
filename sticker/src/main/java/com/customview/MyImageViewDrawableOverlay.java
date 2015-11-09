@@ -114,7 +114,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
                                                 + Math.abs(upY - downLabelY)
                                                 * Math.abs(upY - downLabelY));//两点之间的距离
                     if (distance < 15) { // 距离较小，当作click事件来处理
-                        if(mDrawableListener!=null){
+                        if (mDrawableListener != null) {
                             mDrawableListener.onClick(currentLabel);
                         }
                     }
@@ -298,6 +298,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
 
+        boolean selected = false;
         // iterate the items and post a single tap event to the selected item
         Iterator<MyHighlightView> iterator = mOverlayViews.iterator();
         while (iterator.hasNext()) {
@@ -305,8 +306,11 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
             if (view.isSelected()) {
                 view.onSingleTapConfirmed(e.getX(), e.getY());
                 postInvalidate();
+                selected = true;
             }
         }
+        // cannot avoid setSingleUpListener();
+        //if (selected) return true;
         return super.onSingleTapConfirmed(e);
     }
 
@@ -418,6 +422,9 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
                 return true;
             }
 
+            // cannot avoid setSingleUpListener();
+            // if (edge != MyHighlightView.NONE) return true;
+
             mOverlayView.setMode(MyHighlightView.NONE);
             postInvalidate();
 
@@ -427,6 +434,9 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
                 setSelectedHighlightView(null);
             }
         }
+
+        // cannot avoid setSingleUpListener();
+        //if (checkSelection(e) != null) return true;
 
         return super.onSingleTapUp(e);
     }

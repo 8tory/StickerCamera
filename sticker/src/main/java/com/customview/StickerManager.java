@@ -160,7 +160,7 @@ public class StickerManager {
                     (int) mImageView.getmLastMotionScrollY());
             emptyLabelView.setVisibility(View.VISIBLE);
 
-            labelSelector.showToTop();
+            //labelSelector.showToTop();
             parent.postInvalidate();
         });
 
