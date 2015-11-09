@@ -28,6 +28,7 @@ dependencies {
         transitive = true
     }
     //compile project(':material-dialogs')
+    compile 'com.android.support:support-annotations:23.1.0'
 }
 
 android {

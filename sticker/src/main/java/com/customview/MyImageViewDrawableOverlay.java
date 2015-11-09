@@ -25,7 +25,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.stickercamera.app.camera.util.MatrixUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import com.stickercamera.app.model.Addon;
+import android.support.annotation.DrawableRes;
 
 public class MyImageViewDrawableOverlay extends ImageViewTouch {
 
@@ -640,24 +640,25 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
         clearOverlays();
     }
 
-    // Move to StickerManager, independent model.Addon out of Overlay
-    //删除贴纸的回调接口
-    public static interface StickerCallback {
-        public void onRemoveSticker(Addon sticker);
-    }
-
     public void removeSticker(MyHighlightView hv) {
         removeHightlightView(hv);
         invalidate();
     }
 
-    // Move to StickerManager, independent model.Addon out of Overlay
-    public MyHighlightView addStickerImage(final Addon sticker, final StickerCallback callback) {
-        Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), sticker.getId());
+    public MyHighlightView addSticker(@DrawableRes int res, final MyHighlightView.OnDeleteClickListener onDelete) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), res);
         if (bitmap == null) {
             return null;
         }
+        return addSticker(bitmap, onDelete);
+    }
+
+    public MyHighlightView addSticker(final Bitmap bitmap, final MyHighlightView.OnDeleteClickListener onDelete) {
         StickerDrawable drawable = new StickerDrawable(getContext().getResources(), bitmap);
+        return addSticker(drawable, onDelete);
+    }
+
+    public MyHighlightView addSticker(final StickerDrawable drawable, final MyHighlightView.OnDeleteClickListener onDelete) {
         drawable.setAntiAlias(true);
         drawable.setMinSize(30, 30);
 
@@ -669,7 +670,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
             @Override
             public void onDeleteClick() {
                 removeSticker(hv);
-                callback.onRemoveSticker(sticker);
+                onDelete.onDeleteClick();
             }
         });
 

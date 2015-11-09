@@ -56,6 +56,7 @@ import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import android.text.InputType;
+import android.support.annotation.DrawableRes;
 
 public class StickerManager {
     private ViewGroup parent;
@@ -171,19 +172,33 @@ public class StickerManager {
         });
     }
 
-    public void addSticker() {
-        addSticker(R.drawable.fb_smile);
+    public MyHighlightView addSticker() {
+        return addSticker(R.drawable.fb_smile);
     }
 
-    public void addSticker(int drawableId) {
-        addSticker(new Addon(drawableId));
+    public MyHighlightView addSticker(@DrawableRes int drawableId) {
+        return addSticker(new Addon(drawableId));
     }
 
-    public void addSticker(Addon sticker) {
-        mImageView.addStickerImage(sticker, new MyImageViewDrawableOverlay.StickerCallback() {
+    //删除贴纸的回调接口
+    public static interface StickerCallback {
+        public void onRemoveSticker(Addon sticker);
+    }
+
+    public MyHighlightView addSticker(Addon sticker) {
+        return addSticker(sticker, new StickerCallback() {
             @Override
             public void onRemoveSticker(Addon sticker) {
                 labelSelector.hide();
+            }
+        });
+    }
+
+    public MyHighlightView addSticker(final Addon sticker, final StickerCallback stickerCallback) {
+        return mImageView.addSticker(sticker.getId(), new MyHighlightView.OnDeleteClickListener() {
+            @Override
+            public void onDeleteClick() {
+                stickerCallback.onRemoveSticker(sticker);
             }
         });
     }
