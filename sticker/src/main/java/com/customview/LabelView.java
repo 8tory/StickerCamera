@@ -207,6 +207,5 @@ public class LabelView extends LinearLayout {
         x = x < 0 ? 0 : x;
         y = y < 0 ? 0 : y;
         setupLocation(x, y);
-        wave();
     }
 }
