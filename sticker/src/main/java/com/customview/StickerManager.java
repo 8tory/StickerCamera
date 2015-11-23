@@ -213,6 +213,7 @@ public class StickerManager {
     public void offHighlight() {
         mImageView.setSelectedHighlightView(null);
         //emptyLabelView.clearAnimation();
+        emptyLabelView.setVisibility(View.INVISIBLE);
         //mImageView.clearAnimation();
     }
 
