@@ -66,6 +66,8 @@ public class StickerManager {
     private LabelSelector labelSelector;
 
     private LabelView emptyLabelView;
+    private String mId;
+    private OnAdd mOnAdd;
 
     // TODO merge into Overlay
     private List<LabelView> labels = new ArrayList<LabelView>();
@@ -73,7 +75,21 @@ public class StickerManager {
     //标签区域
     //private View commonLabelArea;
 
+    public StickerManager setId(String id) {
+        mId = id;
+        return this;
+    }
+
+    public StickerManager onAdd(OnAdd onAdd) {
+        mOnAdd = onAdd;
+        return this;
+    }
+
     public StickerManager(ViewGroup parent) {
+        this(parent, true);
+    }
+
+    public StickerManager(ViewGroup parent, boolean interactive) {
         this.parent = parent;
         //public RelativeLayout parent;
 
@@ -81,13 +97,20 @@ public class StickerManager {
         View overlay = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.view_drawable_overlay, null);
         mImageView = (MyImageViewDrawableOverlay) overlay.findViewById(R.id.drawable_overlay);
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(DistanceUtil.getInstance(parent.getContext()).getScreenWidth(),
-                DistanceUtil.getInstance(parent.getContext()).getScreenWidth());
+        ViewGroup.LayoutParams params = null;
+        RelativeLayout.LayoutParams rparams = null;
+        if (interactive) {
+            params = new ViewGroup.LayoutParams(DistanceUtil.getInstance(parent.getContext()).getScreenWidth(),
+                    DistanceUtil.getInstance(parent.getContext()).getScreenWidth());
+            rparams = new RelativeLayout.LayoutParams(DistanceUtil.getInstance(parent.getContext()).getScreenWidth(), DistanceUtil.getInstance(parent.getContext()).getScreenWidth());
+        } else {
+            params = new ViewGroup.LayoutParams(parent.getWidth(), parent.getHeight());
+            rparams = new RelativeLayout.LayoutParams(parent.getWidth(), parent.getHeight());
+        }
         mImageView.setLayoutParams(params);
         overlay.setLayoutParams(params);
         parent.addView(overlay);
 
-        RelativeLayout.LayoutParams rparams = new RelativeLayout.LayoutParams(DistanceUtil.getInstance(parent.getContext()).getScreenWidth(), DistanceUtil.getInstance(parent.getContext()).getScreenWidth());
         labelSelector = new LabelSelector(parent.getContext());
         labelSelector.setLayoutParams(rparams);
         parent.addView(labelSelector);
@@ -186,6 +209,10 @@ public class StickerManager {
         public void onRemoveSticker(Addon sticker);
     }
 
+    public static interface OnAdd {
+        public void onAdd(String id, String text, int left, int top);
+    }
+
     public MyHighlightView addSticker(Addon sticker) {
         return addSticker(sticker, new StickerCallback() {
             @Override
@@ -269,6 +296,37 @@ public class StickerManager {
         emptyLabelView.setVisibility(View.INVISIBLE);
     }
 
+    public void addTextLabel(String text, int left, int top) {
+        addTextLabel(text, left, top, null);
+    }
+
+    public void addPlaceLabel(String text, int left, int top) {
+        addPlaceLabel(text, left, top, null);
+    }
+
+    public void addTextLabel(String text, int left, int top, OnAdd onAdd) {
+        TagItem tagItem = new TagItem(0, text);
+        addLabel(tagItem, left, top, onAdd);
+    }
+
+    public void addPlaceLabel(String text, int left, int top, OnAdd onAdd) {
+        TagItem tagItem = new TagItem(1, text);
+        addLabel(tagItem, left, top, onAdd);
+    }
+
+    public void addLabel(TagItem tagItem, int left, int top, OnAdd onAdd) {
+        if (labels.size() == 0 && left == 0 && top == 0) {
+            left = mImageView.getWidth() / 2 - 10;
+            top = mImageView.getWidth() / 2;
+        }
+        LabelView label = new LabelView(parent.getContext());
+        label.init(tagItem);
+        mImageView.addLabelEditable(parent, label, left, top);
+        labels.add(label);
+        if (onAdd != null) onAdd.onAdd(mId, tagItem.getName(), left, top);
+        if (mOnAdd != null) mOnAdd.onAdd(mId, tagItem.getName(), left, top);
+    }
+
     public void addLabel(TagItem tagItem) {
         labelSelector.hide();
         emptyLabelView.setVisibility(View.INVISIBLE);
@@ -283,6 +341,7 @@ public class StickerManager {
         label.init(tagItem);
         mImageView.addLabelEditable(parent, label, left, top);
         labels.add(label);
+        if (mOnAdd != null) mOnAdd.onAdd(mId, tagItem.getName(), left, top);
     }
 
 }
