@@ -210,7 +210,7 @@ public class StickerManager {
     }
 
     public static interface OnAdd {
-        public void onAdd(String id, String text, int left, int top);
+        public void onAdd(String id, TagItem tag, int left, int top);
     }
 
     public MyHighlightView addSticker(Addon sticker) {
@@ -296,6 +296,51 @@ public class StickerManager {
         emptyLabelView.setVisibility(View.INVISIBLE);
     }
 
+    public void addTextLabelInner(String text, int left, int top) {
+        addTextLabelInner(text, left, top, null);
+    }
+
+    public void addPlaceLabelInner(String text, int left, int top) {
+        addPlaceLabelInner(text, left, top, null);
+    }
+
+    public void addTextLabelInner(String text, int left, int top, OnAdd onAdd) {
+        TagItem tagItem = new TagItem(0, text);
+        addLabelInner(tagItem, left, top, onAdd);
+    }
+
+    public void addPlaceLabelInner(String text, int left, int top, OnAdd onAdd) {
+        TagItem tagItem = new TagItem(1, text);
+        addLabelInner(tagItem, left, top, onAdd);
+    }
+
+    public void addLabelInner(TagItem tagItem, int left, int top, OnAdd onAdd) {
+        if (labels.size() == 0 && left == 0 && top == 0) {
+            left = mImageView.getWidth() / 2 - 10;
+            top = mImageView.getWidth() / 2;
+        }
+        LabelView label = new LabelView(parent.getContext());
+        label.init(tagItem);
+        mImageView.addLabelEditable(parent, label, left, top);
+        labels.add(label);
+    }
+
+    public void addLabelInner(TagItem tagItem) {
+        labelSelector.hide();
+        emptyLabelView.setVisibility(View.INVISIBLE);
+
+        int left = emptyLabelView.getLeft();
+        int top = emptyLabelView.getTop();
+        if (labels.size() == 0 && left == 0 && top == 0) {
+            left = mImageView.getWidth() / 2 - 10;
+            top = mImageView.getWidth() / 2;
+        }
+        LabelView label = new LabelView(parent.getContext());
+        label.init(tagItem);
+        mImageView.addLabelEditable(parent, label, left, top);
+        labels.add(label);
+    }
+
     public void addTextLabel(String text, int left, int top) {
         addTextLabel(text, left, top, null);
     }
@@ -323,8 +368,8 @@ public class StickerManager {
         label.init(tagItem);
         mImageView.addLabelEditable(parent, label, left, top);
         labels.add(label);
-        if (onAdd != null) onAdd.onAdd(mId, tagItem.getName(), left, top);
-        if (mOnAdd != null) mOnAdd.onAdd(mId, tagItem.getName(), left, top);
+        if (onAdd != null) onAdd.onAdd(mId, tagItem, left, top);
+        if (mOnAdd != null) mOnAdd.onAdd(mId, tagItem, left, top);
     }
 
     public void addLabel(TagItem tagItem) {
@@ -341,7 +386,7 @@ public class StickerManager {
         label.init(tagItem);
         mImageView.addLabelEditable(parent, label, left, top);
         labels.add(label);
-        if (mOnAdd != null) mOnAdd.onAdd(mId, tagItem.getName(), left, top);
+        if (mOnAdd != null) mOnAdd.onAdd(mId, tagItem, left, top);
     }
 
 }
