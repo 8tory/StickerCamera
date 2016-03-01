@@ -27,15 +27,15 @@ import com.common.util.DistanceUtil;
  */
 public class LabelView extends LinearLayout {
 
-    private TagItem tagInfo = new TagItem();
+    private TagItem tagItem = new TagItem();
     private float parentWidth = 0;
     private float parentHeight = 0;
     private ImageView labelIcon;
     private TextView labelTxtLeft;
     private TextView labelTxtRight;
 
-    public TagItem getTagInfo() {
-        return tagInfo;
+    public TagItem getTagItem() {
+        return this.tagItem;
     }
 
     public LabelView(Context context) {
@@ -55,14 +55,33 @@ public class LabelView extends LinearLayout {
     }
 
     public void init(TagItem tagItem) {
-        tagInfo.setName(tagItem.getName());
-        tagInfo.setId(tagItem.getId());
-        tagInfo.setType(tagItem.getType());
+        this.tagItem.setName(tagItem.getName());
+        this.tagItem.setId(tagItem.getId());
+        this.tagItem.setType(tagItem.getType());
         labelTxtLeft.setText(tagItem.getName());
         labelTxtRight.setText(tagItem.getName());
-        if (tagItem.getType() == AppConstants.POST_TYPE_POI) {
+        if (this.tagItem.getType() == AppConstants.POST_TYPE_POI) {
             labelIcon.setImageResource(R.drawable.point_poi);
         }
+    }
+
+    public interface OnLabelClickListener {
+        void onClick(LabelView view);
+    }
+
+    OnLabelClickListener onClick;
+
+    public void setOnLabelClickListener(OnLabelClickListener onClick) {
+        this.onClick = onClick;
+    }
+
+    public void onLabelClick(OnLabelClickListener onClick) {
+        this.onClick = onClick;
+    }
+
+    public void click() {
+        if (onClick == null) return;
+        onClick.onClick(this);
     }
 
     /**
@@ -102,7 +121,7 @@ public class LabelView extends LinearLayout {
      */
     public void addTo(ViewGroup parent, final int left, final int top) {
         if (left > parent.getWidth() / 2) {
-            tagInfo.setLeft(false);
+            this.tagItem.setLeft(false);
         }
         this.parentWidth = parent.getWidth();
         if (parentWidth <= 0) {
@@ -115,7 +134,7 @@ public class LabelView extends LinearLayout {
             labelTxtLeft.setVisibility(View.GONE);
             setupLocation(left, top);
             parent.addView(this);
-        } else if (tagInfo.isLeft()) {
+        } else if (this.tagItem.isLeft()) {
             labelTxtRight.setVisibility(View.VISIBLE);
             labelTxtLeft.setVisibility(View.GONE);
             setupLocation(left, top);
@@ -163,8 +182,8 @@ public class LabelView extends LinearLayout {
             params.setMargins(left, top, 0, 0);
         }
 
-        tagInfo.setX(EffectUtil.getStandDis(getContext(), left, this.parentWidth));
-        tagInfo.setY(EffectUtil.getStandDis(getContext(), top, this.parentHeight));
+        this.tagItem.setX(EffectUtil.getStandDis(getContext(), left, this.parentWidth));
+        this.tagItem.setY(EffectUtil.getStandDis(getContext(), top, this.parentHeight));
         setLayoutParams(params);
     }
 

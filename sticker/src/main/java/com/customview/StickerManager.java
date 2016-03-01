@@ -197,9 +197,16 @@ public class StickerManager {
         });
     }
 
+    public void clear() {
+        mImageView.clear(parent);
+    }
+
     public void resetOnSingleTap() {
         mImageView.setSingleTapListener(() -> {});
     }
+
+    //public void setOnLabelClickListener(View.OnClickListener onClick) {
+    //}
 
     public void setOnSingleTap(ImageViewTouch.OnImageViewTouchSingleTapListener onSingleTap) {
         mImageView.setSingleTapListener(onSingleTap);
@@ -210,6 +217,19 @@ public class StickerManager {
         public void onSingleTapConfirmed() {
         }
     }
+
+
+    /*
+    LabelView.OnLabelClickListener onLabelClick;
+
+    public void setOnLabelClickListener(LabelView.OnLabelClickListener onLabelClick) {
+        this.onLabelClick = onLabelClick;
+    }
+
+    public void onLabelClick(LabelView.OnLabelClickListener onLabelClick) {
+        this.onLabelClick = onLabelClick;
+    }
+    */
 
     public interface Action {
         void call();
@@ -419,6 +439,7 @@ public class StickerManager {
         }
         LabelView label = new LabelView(parent.getContext());
         label.init(tagItem);
+        //label.onLabelClick(onLabelClick);
         mImageView.addLabelEditable(parent, label, left, top);
         labels.add(label);
     }
@@ -435,6 +456,7 @@ public class StickerManager {
         }
         LabelView label = new LabelView(parent.getContext());
         label.init(tagItem);
+        //label.onLabelClick(onLabelClick);
         mImageView.addLabelEditable(parent, label, left, top);
         labels.add(label);
     }
@@ -464,6 +486,7 @@ public class StickerManager {
         }
         LabelView label = new LabelView(parent.getContext());
         label.init(tagItem);
+        //label.onLabelClick(onLabelClick);
         mImageView.addLabelEditable(parent, label, left, top);
         labels.add(label);
         if (onAdd != null) onAdd.onAdd(mId, tagItem, left, top);
@@ -482,6 +505,7 @@ public class StickerManager {
         }
         LabelView label = new LabelView(parent.getContext());
         label.init(tagItem);
+        //label.onLabelClick(onLabelClick);
         mImageView.addLabelEditable(parent, label, left, top);
         labels.add(label);
         if (mOnAdd != null) mOnAdd.onAdd(mId, tagItem, left, top);

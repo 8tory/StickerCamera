@@ -71,7 +71,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
      * @param locationY
      */
     //贴纸在上面进行操作
-    public void setCurrentLabel(LabelView label, float eventRawX, float eventRawY) {
+    public synchronized void setCurrentLabel(LabelView label, float eventRawX, float eventRawY) {
         if (labels.contains(label)) {
             currentLabel = label;
             int[] location = new int[2];
@@ -86,22 +86,22 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
         }
     }
 
-    public void addLabel(LabelView label) {
+    public synchronized void addLabel(LabelView label) {
         labels.add(label);
     }
 
-    public void removeLabel(LabelView label) {
+    public synchronized void removeLabel(LabelView label) {
         currentLabel = null;
         labels.remove(label);
     }
 
-    public void clearAnimation() {
+    public synchronized void clearAnimation() {
         for (View v : labels) {
             v.clearAnimation();
         }
     }
 
-    public void wave() {
+    public synchronized void wave() {
         for (LabelView label : labels) {
             label.wave();
         }
@@ -128,6 +128,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
                     if (distance < 15) { // 距离较小，当作click事件来处理
                         if (mDrawableListener != null) {
                             mDrawableListener.onClick(currentLabel);
+                            currentLabel.click();
                         }
                     }
                     currentLabel = null;
@@ -540,7 +541,8 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
         }
     }
 
-    public void clearOverlays() {
+    public synchronized void clearOverlays() {
+        synchronized (mOverlayViews) {
         Log.i(LOG_TAG, "clearOverlays");
         setSelectedHighlightView(null);
         while (mOverlayViews.size() > 0) {
@@ -548,6 +550,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
             hv.dispose();
         }
         mOverlayView = null;
+        }
     }
 
     public boolean addHighlightView(MyHighlightView hv) {
@@ -660,6 +663,20 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
 
     public void clear() {
         clearOverlays();
+    }
+
+    // clear with labels
+    public synchronized void clear(ViewGroup container) {
+        synchronized (labels) {
+            clearOverlays();
+            // Avoid ConcurrentModificationException
+            //for (Iterator it = labels.iterator(); it.hasNext();) {
+            //LabelView label = (LabelView) it.next();
+            for (LabelView label : labels) {
+                container.removeView(label);
+                removeLabel(label);
+            }
+        }
     }
 
     public void removeSticker(MyHighlightView hv) {
