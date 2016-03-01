@@ -178,6 +178,7 @@ public class StickerManager {
                 labels.remove(label);
             }
         });
+
         mImageView.setSingleTapListener(() -> {
             emptyLabelView.updateLocation((int) mImageView.getmLastMotionScrollX(),
                     (int) mImageView.getmLastMotionScrollY());
@@ -194,6 +195,103 @@ public class StickerManager {
                     (int) labelSelector.getmLastTouchY());
             emptyLabelView.setVisibility(View.VISIBLE);
         });
+    }
+
+    public void resetOnSingleTap() {
+        mImageView.setSingleTapListener(() -> {});
+    }
+
+    public void setOnSingleTap(ImageViewTouch.OnImageViewTouchSingleTapListener onSingleTap) {
+        mImageView.setSingleTapListener(onSingleTap);
+    }
+
+    public static class SimpleOnSingleTap implements ImageViewTouch.OnImageViewTouchSingleTapListener {
+        @Override
+        public void onSingleTapConfirmed() {
+        }
+    }
+
+    public interface Action {
+        void call();
+    }
+
+    public interface Action1<T> {
+        void call(T t1);
+    }
+
+    public interface Action2<T, T2> {
+        void call(T t, T t2);
+    }
+
+    public static class SimpleOnEventListener implements MyImageViewDrawableOverlay.OnDrawableEventListener {
+        @Override
+        public void onMove(MyHighlightView view) {
+            if (onMove == null) return;
+            onMove.call(view);
+        }
+
+        @Override
+        public void onFocusChange(MyHighlightView newFocus, MyHighlightView oldFocus) {
+            if (onFocusChange == null) return;
+            onFocusChange.call(newFocus, oldFocus);
+        }
+
+        @Override
+        public void onDown(MyHighlightView view) {
+            if (onDown == null) return;
+            onDown.call(view);
+        }
+
+        @Override
+        public void onClick(MyHighlightView view) {
+            if (onClick == null) return;
+            onClick.call(view);
+        }
+
+        @Override
+        public void onClick(final LabelView label) {
+            if (onLabelClick == null) return;
+            onLabelClick.call(label);
+        }
+
+        Action1<MyHighlightView> onMove;
+        Action2<MyHighlightView, MyHighlightView> onFocusChange;
+        Action1<MyHighlightView> onDown;
+        Action1<MyHighlightView> onClick;
+        Action1<LabelView> onLabelClick;
+
+        public SimpleOnEventListener onMove(Action1<MyHighlightView> onMove) {
+            this.onMove = onMove;
+            return this;
+        }
+
+        public SimpleOnEventListener onFocusChange(Action2<MyHighlightView, MyHighlightView> onFocusChange) {
+            this.onFocusChange = onFocusChange;
+            return this;
+        }
+
+        public SimpleOnEventListener onDown(Action1<MyHighlightView> onDown) {
+            this.onDown = onDown;
+            return this;
+        }
+
+        public SimpleOnEventListener onClick(Action1<MyHighlightView> onClick) {
+            this.onClick = onClick;
+            return this;
+        }
+
+        public SimpleOnEventListener onLabelClick(Action1<LabelView> onLabelClick) {
+            this.onLabelClick = onLabelClick;
+            return this;
+        }
+
+        public static SimpleOnEventListener create() {
+            return new SimpleOnEventListener();
+        }
+    }
+
+    public void setOnEvent(MyImageViewDrawableOverlay.OnDrawableEventListener onEvent) {
+        mImageView.setOnDrawableEventListener(onEvent);
     }
 
     public MyHighlightView addSticker() {
