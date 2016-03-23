@@ -22,7 +22,10 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile 'it.sephiroth.android.library.horizontallistview:hlistview:1.2.2'
     compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.3.0'
-    compile 'com.github.yongjhih:ImageViewZoom:-SNAPSHOT'
+    //compile 'com.github.yongjhih:ImageViewZoom:-SNAPSHOT'
+    //compile 'com.github.yongjhih:ImageViewZoom:1cb0fb06d1'
+    //compile 'com.github.yongjhih:ImageViewZoom:1cb0fb06d1@aar'
+    compile 'com.github.yongjhih:ImageViewZoom:1.0.6'
     compile 'com.github.medyo:fancybuttons:1.5@aar'
     compile('com.github.afollestad.material-dialogs:core:0.8.5.0@aar') {
         transitive = true

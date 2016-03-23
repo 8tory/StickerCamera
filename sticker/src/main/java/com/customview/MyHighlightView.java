@@ -25,7 +25,7 @@ import com.common.util.DistanceUtil;
 
 public class MyHighlightView implements EditableDrawable.OnSizeChange {
 
-    static final String LOG_TAG = "drawable-view";
+    static final String LOG_TAG = "Log8";
 
     public static enum AlignModeV {
         Top, Bottom, Center

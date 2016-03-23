@@ -152,25 +152,30 @@ public class StickerManager {
         mImageView.setOnDrawableEventListener(new MyImageViewDrawableOverlay.OnDrawableEventListener() {
             @Override
             public void onMove(MyHighlightView view) {
+                Log.d("Log8", "OnDrawableEventListener.onMove");
             }
 
             @Override
             public void onFocusChange(MyHighlightView newFocus, MyHighlightView oldFocus) {
+                Log.d("Log8", "OnDrawableEventListener.onFocusChange");
             }
 
             @Override
             public void onDown(MyHighlightView view) {
+                Log.d("Log8", "OnDrawableEventListener.onDown view");
 
             }
 
             @Override
             public void onClick(MyHighlightView view) {
+                Log.d("Log8", "OnDrawableEventListener.onClick view");
                 labelSelector.hide();
                 //mImageView.removeSticker(view); // deleteIcon instead
             }
 
             @Override
             public void onClick(final LabelView label) {
+                Log.d("Log8", "OnDrawableEventListener.onClick label");
                 if (label.equals(emptyLabelView)) {
                     return;
                 }
@@ -202,7 +207,9 @@ public class StickerManager {
     }
 
     public void resetOnSingleTap() {
-        mImageView.setSingleTapListener(() -> {});
+        mImageView.setSingleTapListener(() -> {
+            Log.d("Log8", "resetOnSingleTap");
+        });
     }
 
     //public void setOnLabelClickListener(View.OnClickListener onClick) {
@@ -246,30 +253,35 @@ public class StickerManager {
     public static class SimpleOnEventListener implements MyImageViewDrawableOverlay.OnDrawableEventListener {
         @Override
         public void onMove(MyHighlightView view) {
+            Log.d("Log8", "SimpleOnDrawableEventListener.onMove");
             if (onMove == null) return;
             onMove.call(view);
         }
 
         @Override
         public void onFocusChange(MyHighlightView newFocus, MyHighlightView oldFocus) {
+            Log.d("Log8", "SimpleOnDrawableEventListener.onFocusChange");
             if (onFocusChange == null) return;
             onFocusChange.call(newFocus, oldFocus);
         }
 
         @Override
         public void onDown(MyHighlightView view) {
+            Log.d("Log8", "SimpleOnDrawableEventListener.onDown");
             if (onDown == null) return;
             onDown.call(view);
         }
 
         @Override
         public void onClick(MyHighlightView view) {
+            Log.d("Log8", "SimpleOnDrawableEventListener.onClick view");
             if (onClick == null) return;
             onClick.call(view);
         }
 
         @Override
         public void onClick(final LabelView label) {
+            Log.d("Log8", "SimpleOnDrawableEventListener.onClick label");
             if (onLabelClick == null) return;
             onLabelClick.call(label);
         }
@@ -303,10 +315,6 @@ public class StickerManager {
         public SimpleOnEventListener onLabelClick(Action1<LabelView> onLabelClick) {
             this.onLabelClick = onLabelClick;
             return this;
-        }
-
-        public static SimpleOnEventListener create() {
-            return new SimpleOnEventListener();
         }
     }
 
