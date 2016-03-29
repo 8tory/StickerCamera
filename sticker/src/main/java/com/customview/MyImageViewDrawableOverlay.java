@@ -109,6 +109,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        Log.i(LOG_TAG, "onTouchEvent");
         if (currentLabel != null) {
             currentLabel.updateLocation((int) (event.getX() - labelX),
                 (int) (event.getY() - labelY));
@@ -118,6 +119,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_UP:// 手指离开时 
                 case MotionEvent.ACTION_CANCEL:
+                    Log.i(LOG_TAG, "onTouchEvent: up/cancel");
 
                     float upX = event.getRawX();
                     float upY = event.getRawY();
@@ -126,7 +128,9 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
                                                 + Math.abs(upY - downLabelY)
                                                 * Math.abs(upY - downLabelY));//两点之间的距离
                     if (distance < 15) { // 距离较小，当作click事件来处理
+                        Log.i(LOG_TAG, "onTouchEvent: click");
                         if (mDrawableListener != null) {
+                            Log.i(LOG_TAG, "onTouchEvent: click label");
                             mDrawableListener.onClick(currentLabel);
                             currentLabel.click();
                         }
@@ -310,6 +314,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
+        Log.i(LOG_TAG, "onSingleTapConfirmed");
 
         boolean selected = false;
         // iterate the items and post a single tap event to the selected item
@@ -426,15 +431,18 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
         Log.i(LOG_TAG, "onSingleTapUp");
 
         if (mOverlayView != null) {
+            Log.i(LOG_TAG, "onSingleTapUp: mOverlayView != null");
 
             int edge = mOverlayView.getHit(e.getX(), e.getY());
             if ((edge & MyHighlightView.MOVE) == MyHighlightView.MOVE) {
                 if (mDrawableListener != null) {
+                    Log.i(LOG_TAG, "onSingleTapUp: click");
                     mDrawableListener.onClick(mOverlayView);
                 }
                 return true;
             }
 
+            Log.i(LOG_TAG, "onSingleTapUp: !MOVE");
             // cannot avoid setSingleUpListener();
             // if (edge != MyHighlightView.NONE) return true;
 
