@@ -67,16 +67,47 @@ public class TagItem implements Serializable {
         return x;
     }
 
+    /**
+     * DONT setX && setY(), setPosition(x, y) instead for OnMoveListener.onMove(x, y)
+     */
     public void setX(double x) {
+        boolean posChanged = !(this.x == x);
         this.x = x;
+        if (posChanged) onMove.onMove(this, x, y);
     }
 
     public double getY() {
         return y;
     }
 
+    /**
+     * DONT setX && setY(), setPosition(x, y) instead for OnMoveListener.onMove(x, y)
+     */
     public void setY(double y) {
+        boolean posChanged = !(this.y == y);
         this.y = y;
+        if (posChanged) onMove.onMove(this, x, y);
+    }
+
+    public void setPosition(double x, double y) {
+        boolean posChanged = !(this.x == x && this.y == y);
+        this.x = x;
+        this.y = y;
+        if (posChanged) onMove.onMove(this, x, y);
+    }
+
+    public interface OnMoveListener {
+        void onMove(TagItem item, double x, double y);
+    }
+
+    OnMoveListener onMove;
+
+    public void setOnMoveListener(OnMoveListener onMove) {
+        this.onMove = onMove;
+    }
+
+    public void onMove(OnMoveListener onMove) {
+        this.onMove = onMove;
     }
 
 }
