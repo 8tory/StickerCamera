@@ -73,7 +73,7 @@ public class TagItem implements Serializable {
     public void setX(double x) {
         boolean posChanged = !(this.x == x);
         this.x = x;
-        if (posChanged) onMove.onMove(this, x, y);
+        if (posChanged && onMove != null) onMove.onMove(this, x, y);
     }
 
     public double getY() {
@@ -86,14 +86,14 @@ public class TagItem implements Serializable {
     public void setY(double y) {
         boolean posChanged = !(this.y == y);
         this.y = y;
-        if (posChanged) onMove.onMove(this, x, y);
+        if (posChanged && onMove != null) onMove.onMove(this, x, y);
     }
 
     public void setPosition(double x, double y) {
         boolean posChanged = !(this.x == x && this.y == y);
         this.x = x;
         this.y = y;
-        if (posChanged) onMove.onMove(this, x, y);
+        if (posChanged && onMove != null) onMove.onMove(this, x, y);
     }
 
     public interface OnMoveListener {
