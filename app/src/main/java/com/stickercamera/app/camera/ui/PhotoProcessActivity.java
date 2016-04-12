@@ -240,7 +240,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             //保存标签信息
             List<TagItem> tagInfoList = new ArrayList<TagItem>();
             for (LabelView label : mStickerManager.labels()) {
-                tagInfoList.add(label.getTagInfo());
+                tagInfoList.add(label.getTagItem());
             }
 
             //将图片信息通过EventBus发送到MainActivity
