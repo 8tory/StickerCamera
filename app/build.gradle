@@ -33,7 +33,9 @@ dependencies {
     compile 'com.github.yongjhih:ImageViewZoom:-SNAPSHOT'
 
     compile 'de.greenrobot:eventbus:2.4.0'
-    compile project(':sticker')
+    compile(project(':sticker')) {
+        transitive = true
+    }
     compile 'com.infstory:proguard-snippets:1.0.0'
 }
 

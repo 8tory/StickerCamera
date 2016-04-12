@@ -27,11 +27,11 @@ dependencies {
     //compile 'com.github.yongjhih:ImageViewZoom:1cb0fb06d1@aar'
     compile 'com.github.yongjhih:ImageViewZoom:1.0.6'
     compile 'com.github.medyo:fancybuttons:1.5@aar'
-    compile('com.github.afollestad.material-dialogs:core:0.8.5.0@aar') {
+    compile('com.github.afollestad.material-dialogs:core:0.8.5.7@aar') {
         transitive = true
     }
     //compile project(':material-dialogs')
-    compile 'com.android.support:support-annotations:23.1.0'
+    compile 'com.android.support:support-annotations:23.2.1'
 }
 
 android {
