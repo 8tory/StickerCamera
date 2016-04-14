@@ -90,10 +90,18 @@ public class TagItem implements Serializable {
     }
 
     public void setPosition(double x, double y) {
+        android.util.Log.d("Log8", "TagItem.setPosition:");
         boolean posChanged = !(this.x == x && this.y == y);
+        android.util.Log.d("Log8", "TagItem.setPosition: posChanged: " + posChanged);
         this.x = x;
         this.y = y;
-        if (posChanged && onMove != null) onMove.onMove(this, x, y);
+        android.util.Log.d("Log8", "TagItem.setPosition: onMove: " + onMove);
+        android.util.Log.d("Log8", "TagItem.setPosition: this: " + this);
+        if (posChanged && onMove != null) {
+            android.util.Log.d("Log8", "TagItem.setPosition: onMove: " + x);
+            android.util.Log.d("Log8", "TagItem.setPosition: onMove: " + y);
+            onMove.onMove(this, x, y);
+        }
     }
 
     public interface OnMoveListener {
@@ -107,6 +115,7 @@ public class TagItem implements Serializable {
     }
 
     public void onMove(OnMoveListener onMove) {
+        android.util.Log.d("Log8", "TagItem.onMove: " + onMove);
         this.onMove = onMove;
     }
 

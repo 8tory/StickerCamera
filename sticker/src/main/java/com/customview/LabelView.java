@@ -55,9 +55,7 @@ public class LabelView extends LinearLayout {
     }
 
     public void init(TagItem tagItem) {
-        this.tagItem.setName(tagItem.getName());
-        this.tagItem.setId(tagItem.getId());
-        this.tagItem.setType(tagItem.getType());
+        this.tagItem = tagItem != null ? tagItem : new TagItem();
         labelTxtLeft.setText(tagItem.getName());
         labelTxtRight.setText(tagItem.getName());
         if (this.tagItem.getType() == AppConstants.POST_TYPE_POI) {
@@ -172,7 +170,9 @@ public class LabelView extends LinearLayout {
     }
 
     private void setupLocation(int leftLoc, int topLoc) {
+        android.util.Log.d("Log8", "LabelView.setupLocation: ");
         boolean posChanged = !(this.left == leftLoc && this.top == topLoc);
+        android.util.Log.d("Log8", "LabelView.setupLocation: posChanged: " + posChanged);
         this.left = leftLoc;
         this.top = topLoc;
 
@@ -239,6 +239,7 @@ public class LabelView extends LinearLayout {
     }
 
     public void updateLocation(int x, int y) {
+        android.util.Log.d("Log8", "LabelView.updateLocation: ");
         x = x < 0 ? 0 : x;
         y = y < 0 ? 0 : y;
         setupLocation(x, y);

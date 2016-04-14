@@ -422,25 +422,25 @@ public class StickerManager {
         emptyLabelView.setVisibility(View.INVISIBLE);
     }
 
-    public void addTextLabelInner(String text, int left, int top) {
-        addTextLabelInner(text, left, top, null);
+    public TagItem addTextLabelInner(String text, int left, int top) {
+        return addTextLabelInner(text, left, top, null);
     }
 
-    public void addPlaceLabelInner(String text, int left, int top) {
-        addPlaceLabelInner(text, left, top, null);
+    public TagItem addPlaceLabelInner(String text, int left, int top) {
+        return addPlaceLabelInner(text, left, top, null);
     }
 
-    public void addTextLabelInner(String text, int left, int top, OnAdd onAdd) {
+    public TagItem addTextLabelInner(String text, int left, int top, OnAdd onAdd) {
         TagItem tagItem = new TagItem(0, text);
-        addLabelInner(tagItem, left, top, onAdd);
+        return addLabelInner(tagItem, left, top, onAdd);
     }
 
-    public void addPlaceLabelInner(String text, int left, int top, OnAdd onAdd) {
+    public TagItem addPlaceLabelInner(String text, int left, int top, OnAdd onAdd) {
         TagItem tagItem = new TagItem(1, text);
-        addLabelInner(tagItem, left, top, onAdd);
+        return addLabelInner(tagItem, left, top, onAdd);
     }
 
-    public void addLabelInner(TagItem tagItem, int left, int top, OnAdd onAdd) {
+    public TagItem addLabelInner(TagItem tagItem, int left, int top, OnAdd onAdd) {
         if (labels.size() == 0 && left == 0 && top == 0) {
             left = mImageView.getWidth() / 2 - 10;
             top = mImageView.getWidth() / 2;
@@ -450,9 +450,10 @@ public class StickerManager {
         //label.onLabelClick(onLabelClick);
         mImageView.addLabelEditable(parent, label, left, top);
         labels.add(label);
+        return tagItem;
     }
 
-    public void addLabelInner(TagItem tagItem) {
+    public TagItem addLabelInner(TagItem tagItem) {
         labelSelector.hide();
         emptyLabelView.setVisibility(View.INVISIBLE);
 
@@ -467,27 +468,28 @@ public class StickerManager {
         //label.onLabelClick(onLabelClick);
         mImageView.addLabelEditable(parent, label, left, top);
         labels.add(label);
+        return tagItem;
     }
 
-    public void addTextLabel(String text, int left, int top) {
-        addTextLabel(text, left, top, null);
+    public TagItem addTextLabel(String text, int left, int top) {
+        return addTextLabel(text, left, top, null);
     }
 
-    public void addPlaceLabel(String text, int left, int top) {
-        addPlaceLabel(text, left, top, null);
+    public TagItem addPlaceLabel(String text, int left, int top) {
+        return addPlaceLabel(text, left, top, null);
     }
 
-    public void addTextLabel(String text, int left, int top, OnAdd onAdd) {
+    public TagItem addTextLabel(String text, int left, int top, OnAdd onAdd) {
         TagItem tagItem = new TagItem(0, text);
-        addLabel(tagItem, left, top, onAdd);
+        return addLabel(tagItem, left, top, onAdd);
     }
 
-    public void addPlaceLabel(String text, int left, int top, OnAdd onAdd) {
+    public TagItem addPlaceLabel(String text, int left, int top, OnAdd onAdd) {
         TagItem tagItem = new TagItem(1, text);
-        addLabel(tagItem, left, top, onAdd);
+        return addLabel(tagItem, left, top, onAdd);
     }
 
-    public void addLabel(TagItem tagItem, int left, int top, OnAdd onAdd) {
+    public TagItem addLabel(TagItem tagItem, int left, int top, OnAdd onAdd) {
         if (labels.size() == 0 && left == 0 && top == 0) {
             left = mImageView.getWidth() / 2 - 10;
             top = mImageView.getWidth() / 2;
@@ -499,9 +501,10 @@ public class StickerManager {
         labels.add(label);
         if (onAdd != null) onAdd.onAdd(mId, tagItem, left, top);
         if (mOnAdd != null) mOnAdd.onAdd(mId, tagItem, left, top);
+        return tagItem;
     }
 
-    public void addLabel(TagItem tagItem) {
+    public TagItem addLabel(TagItem tagItem) {
         labelSelector.hide();
         emptyLabelView.setVisibility(View.INVISIBLE);
 
@@ -517,6 +520,7 @@ public class StickerManager {
         mImageView.addLabelEditable(parent, label, left, top);
         labels.add(label);
         if (mOnAdd != null) mOnAdd.onAdd(mId, tagItem, left, top);
+        return tagItem;
     }
 
 }
