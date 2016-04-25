@@ -107,15 +107,27 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
         }
     }
 
+    private boolean mLabelMovingEnabled = true;
+
+    public void disableLabelMoving() {
+        mLabelMovingEnabled = false;
+    }
+
+    public void enableLabelMoving() {
+        mLabelMovingEnabled = true;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         Log.i(LOG_TAG, "onTouchEvent");
+
         if (currentLabel != null) {
-            currentLabel.updateLocation((int) (event.getX() - labelX),
-                (int) (event.getY() - labelY));
-            currentLabel.invalidate();
-        }
-        if (currentLabel != null) {
+            if (mLabelMovingEnabled) {
+                currentLabel.updateLocation((int) (event.getX() - labelX),
+                    (int) (event.getY() - labelY));
+                currentLabel.invalidate();
+            }
+
             switch (event.getAction()) {
                 case MotionEvent.ACTION_UP:// 手指离开时 
                 case MotionEvent.ACTION_CANCEL:
@@ -132,7 +144,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
                         if (mDrawableListener != null) {
                             Log.i(LOG_TAG, "onTouchEvent: click label");
                             mDrawableListener.onClick(currentLabel);
-                            if (currentLabel != null) currentLabel.click(); // Allow perform click listener for each label
+                            currentLabel.click(); // Allow perform click listener for each label
                         }
                     }
                     currentLabel = null;
@@ -676,14 +688,29 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
     // clear with labels
     public synchronized void clear(ViewGroup container) {
         synchronized (labels) {
+            currentLabel = null;
+            labels.clear();
             clearOverlays();
             // Avoid ConcurrentModificationException
-            //for (Iterator it = labels.iterator(); it.hasNext();) {
-            //LabelView label = (LabelView) it.next();
+            /*
+            for (Iterator it = labels.iterator(); it.hasNext();) {
+                LabelView label = (LabelView) it.next();
+                if (label != null) {
+                    removeLabel(label);
+                }
+            }
+            */
+            /* ConcurrentModificationException
             for (LabelView label : labels) {
                 container.removeView(label);
                 removeLabel(label);
             }
+            */
+            // Collections.synchronizedList
+            // synchronized (synchronizedList) {
+            //   while (iterator.hasNext()) {
+            //   }
+            // }
         }
     }
 

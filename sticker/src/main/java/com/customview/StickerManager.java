@@ -212,6 +212,16 @@ public class StickerManager {
         });
     }
 
+    public void disableLabelMoving() {
+        if (mImageView == null) return;
+        mImageView.disableLabelMoving();
+    }
+
+    public void enableLabelMoving() {
+        if (mImageView == null) return;
+        mImageView.enableLabelMoving();
+    }
+
     //public void setOnLabelClickListener(View.OnClickListener onClick) {
     //}
 
