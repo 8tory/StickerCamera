@@ -39,7 +39,9 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
         void onClick(MyHighlightView view);
 
         //标签的点击事件处理
-        void onClick(LabelView label);
+        void onClick(final LabelView label);
+
+        void onUp(final LabelView label, Integer x, Integer y);
     };
 
     //删除的时候会出错
@@ -139,14 +141,17 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
                                                 * Math.abs(upX - downLabelX)
                                                 + Math.abs(upY - downLabelY)
                                                 * Math.abs(upY - downLabelY));//两点之间的距离
-                    if (distance < 15) { // 距离较小，当作click事件来处理
-                        Log.i(LOG_TAG, "onTouchEvent: click");
-                        if (mDrawableListener != null) {
-                            Log.i(LOG_TAG, "onTouchEvent: click label");
-                            if (currentLabel != null) { // FIXME Why NPE?
+                    if (currentLabel != null) { // FIXME Why NPE?
+                        if (distance < 15) { // 距离较小，当作click事件来处理
+                            Log.i(LOG_TAG, "onTouchEvent: click");
+                            if (mDrawableListener != null) {
+                                Log.i(LOG_TAG, "onTouchEvent: click label");
                                 mDrawableListener.onClick(currentLabel);
-                                currentLabel.click(); // Allow perform click listener for each label
+                                currentLabel.onClick(); // Allow perform click listener for each label
                             }
+                        } else {
+                            mDrawableListener.onUp(currentLabel, (int) event.getX(), (int) event.getY());
+                            currentLabel.onUp((int) event.getX(), (int) event.getY());
                         }
                     }
                     currentLabel = null; // delete onClick

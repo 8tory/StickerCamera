@@ -149,7 +149,7 @@ public class StickerManager {
                 }).show();
         });
 
-        mImageView.setOnDrawableEventListener(new MyImageViewDrawableOverlay.OnDrawableEventListener() {
+        mImageView.setOnDrawableEventListener(new SimpleOnEventListener() {
             @Override
             public void onMove(MyHighlightView view) {
                 Log.d("Log8", "OnDrawableEventListener.onMove");
@@ -253,11 +253,15 @@ public class StickerManager {
     }
 
     public interface Action1<T> {
-        void call(T t1);
+        void call(T t);
     }
 
     public interface Action2<T, T2> {
         void call(T t, T t2);
+    }
+
+    public interface Action3<T, T2, T3> {
+        void call(T t, T2 t2, T3 t3);
     }
 
     public static class SimpleOnEventListener implements MyImageViewDrawableOverlay.OnDrawableEventListener {
@@ -296,11 +300,19 @@ public class StickerManager {
             onLabelClick.call(label);
         }
 
+        @Override
+        public void onUp(final LabelView label, Integer x, Integer y) {
+            Log.d("Log8", "SimpleOnDrawableEventListener.onUp label");
+            if (onLabelUp == null) return;
+            onLabelUp.call(label, x, y);
+        }
+
         Action1<MyHighlightView> onMove;
         Action2<MyHighlightView, MyHighlightView> onFocusChange;
         Action1<MyHighlightView> onDown;
         Action1<MyHighlightView> onClick;
         Action1<LabelView> onLabelClick;
+        Action3<LabelView, Integer, Integer> onLabelUp;
 
         public SimpleOnEventListener onMove(Action1<MyHighlightView> onMove) {
             this.onMove = onMove;
@@ -324,6 +336,11 @@ public class StickerManager {
 
         public SimpleOnEventListener onLabelClick(Action1<LabelView> onLabelClick) {
             this.onLabelClick = onLabelClick;
+            return this;
+        }
+
+        public SimpleOnEventListener onLabelUp(Action3<LabelView, Integer, Integer> onLabelUp) {
+            this.onLabelUp = onLabelUp;
             return this;
         }
     }

@@ -77,8 +77,20 @@ public class LabelView extends LinearLayout {
         this.onClick = onClick;
     }
 
-    public interface OnLabelMoveListener {
-        void onMove(LabelView view, int x, int y);
+    public interface Action3<T, T2, T3> {
+        void call(T t, T2 t2, T3 t3);
+    }
+
+    public interface ViewAction<T extends View> extends Action3<T, Integer, Integer> {
+    }
+
+    public interface OnLabelAction extends ViewAction<LabelView> {
+    }
+
+    public interface OnLabelMoveListener extends OnLabelAction {
+    }
+
+    public interface OnLabelUpListener extends OnLabelAction {
     }
 
     OnLabelMoveListener onMove;
@@ -91,9 +103,20 @@ public class LabelView extends LinearLayout {
         this.onMove = onMove;
     }
 
-    public void click() {
+    OnLabelUpListener onUp;
+
+    public void onUp(OnLabelUpListener onUp) {
+        this.onUp = onUp;
+    }
+
+    public void onClick() {
         if (onClick == null) return;
         onClick.onClick(this);
+    }
+
+    public void onUp(int x, int y) {
+        if (onUp == null) return;
+        onUp.call(this, x, y);
     }
 
     /**
@@ -200,7 +223,7 @@ public class LabelView extends LinearLayout {
         this.tagItem.setPosition(EffectUtil.getStandDis(getContext(), left, this.parentWidth),
                 EffectUtil.getStandDis(getContext(), top, this.parentHeight));
         setLayoutParams(params);
-        if (onMove != null) onMove.onMove(this, left, top);
+        if (onMove != null) onMove.call(this, left, top);
     }
 
     private void setImageWidth(int width) {
