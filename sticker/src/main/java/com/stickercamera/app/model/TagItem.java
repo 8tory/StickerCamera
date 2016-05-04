@@ -68,12 +68,12 @@ public class TagItem implements Serializable {
     }
 
     /**
-     * DONT setX && setY(), setPosition(x, y) instead for OnMoveListener.onMove(x, y)
+     * DONT setX && setY(), setPosition(x, y) instead for OnMoveListener.call(x, y)
      */
     public void setX(double x) {
         boolean posChanged = !(this.x == x);
         this.x = x;
-        if (posChanged && onMove != null) onMove.onMove(this, x, y);
+        if (posChanged && onMove != null) onMove.call(this, x, y);
     }
 
     public double getY() {
@@ -81,12 +81,12 @@ public class TagItem implements Serializable {
     }
 
     /**
-     * DONT setX && setY(), setPosition(x, y) instead for OnMoveListener.onMove(x, y)
+     * DONT setX && setY(), setPosition(x, y) instead for OnMoveListener.call(x, y)
      */
     public void setY(double y) {
         boolean posChanged = !(this.y == y);
         this.y = y;
-        if (posChanged && onMove != null) onMove.onMove(this, x, y);
+        if (posChanged && onMove != null) onMove.call(this, x, y);
     }
 
     public void setPosition(double x, double y) {
@@ -100,23 +100,41 @@ public class TagItem implements Serializable {
         if (posChanged && onMove != null) {
             android.util.Log.d("Log8", "TagItem.setPosition: onMove: " + x);
             android.util.Log.d("Log8", "TagItem.setPosition: onMove: " + y);
-            onMove.onMove(this, x, y);
+            onMove.call(this, x, y);
         }
     }
 
-    public interface OnMoveListener {
-        void onMove(TagItem item, double x, double y);
+    public interface Action3<T, T2, T3> {
+        void call(T t, T2 t2, T3 t3);
     }
 
-    OnMoveListener onMove;
+    public interface ItemAction<T> extends Action3<T, Double, Double> {
+    }
 
-    public void setOnMoveListener(OnMoveListener onMove) {
+    public interface OnItemAction extends ItemAction<TagItem> {
+    }
+
+    public interface OnItemMoveListener extends OnItemAction {
+    }
+
+    public interface OnItemUpListener extends OnItemAction {
+    }
+
+    OnItemMoveListener onMove;
+
+    public void onMove(OnItemMoveListener onMove) {
         this.onMove = onMove;
     }
 
-    public void onMove(OnMoveListener onMove) {
-        android.util.Log.d("Log8", "TagItem.onMove: " + onMove);
-        this.onMove = onMove;
+    OnItemUpListener onUp;
+
+    public void onUp(OnItemUpListener onUp) {
+        this.onUp = onUp;
+    }
+
+    public void onUp(double x, double y) {
+        if (onUp == null) return;
+        onUp.call(this, x, y);
     }
 
 }
