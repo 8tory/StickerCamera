@@ -115,10 +115,11 @@ public class LabelView extends LinearLayout {
     }
 
     public void onUp(int x, int y) {
-        if (onUp == null) return;
-        onUp.call(this, x, y);
-        this.tagItem.onUp(EffectUtil.getStandDis(getContext(), x, this.parentWidth),
-                EffectUtil.getStandDis(getContext(), y, this.parentHeight));
+        if (onUp != null) {
+            onUp.call(this, x, y);
+        }
+        this.tagItem.onUp(EffectUtil.getStandDis(getContext(), left, this.parentWidth),
+                EffectUtil.getStandDis(getContext(), top, this.parentHeight));
     }
 
     /**

@@ -147,11 +147,11 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
                             if (mDrawableListener != null) {
                                 Log.i(LOG_TAG, "onTouchEvent: click label");
                                 mDrawableListener.onClick(currentLabel);
-                                currentLabel.onClick(); // Allow perform click listener for each label
+                                if (currentLabel != null) currentLabel.onClick(); // Allow perform click listener for each label
                             }
                         } else {
                             mDrawableListener.onUp(currentLabel, (int) event.getX(), (int) event.getY());
-                            currentLabel.onUp((int) event.getX(), (int) event.getY());
+                            if (currentLabel != null) currentLabel.onUp((int) event.getX(), (int) event.getY());
                         }
                     }
                     currentLabel = null; // delete onClick
