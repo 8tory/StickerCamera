@@ -696,6 +696,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
     public synchronized void clear(ViewGroup container) {
         synchronized (labels) {
             currentLabel = null;
+            for (LabelView label : labels) container.removeView(label);
             labels.clear();
             clearOverlays();
             // Avoid ConcurrentModificationException
