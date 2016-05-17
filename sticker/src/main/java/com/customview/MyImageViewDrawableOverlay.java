@@ -135,26 +135,27 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
                 case MotionEvent.ACTION_CANCEL:
                     Log.i(LOG_TAG, "onTouchEvent: up/cancel");
 
+                    if (mDrawableListener != null) {
+                        mDrawableListener.onUp(currentLabel, (int) event.getX(), (int) event.getY());
+                    }
+                    if (currentLabel != null) currentLabel.onUp((int) event.getX(), (int) event.getY());
+
                     float upX = event.getRawX();
                     float upY = event.getRawY();
                     double distance = Math.sqrt(Math.abs(upX - downLabelX)
                                                 * Math.abs(upX - downLabelX)
                                                 + Math.abs(upY - downLabelY)
                                                 * Math.abs(upY - downLabelY));//两点之间的距离
-                    if (currentLabel != null) { // FIXME Why NPE?
-                        if (distance < 15) { // 距离较小，当作click事件来处理
-                            Log.i(LOG_TAG, "onTouchEvent: click");
-                            if (mDrawableListener != null) {
-                                Log.i(LOG_TAG, "onTouchEvent: click label");
-                                mDrawableListener.onClick(currentLabel);
-                                if (currentLabel != null) currentLabel.onClick(); // Allow perform click listener for each label
-                            }
-                        } else {
-                            mDrawableListener.onUp(currentLabel, (int) event.getX(), (int) event.getY());
-                            if (currentLabel != null) currentLabel.onUp((int) event.getX(), (int) event.getY());
+                    if (distance < 15) { // 距离较小，当作click事件来处理
+                        Log.i(LOG_TAG, "onTouchEvent: click");
+                        if (mDrawableListener != null) {
+                            Log.i(LOG_TAG, "onTouchEvent: click label");
+                            mDrawableListener.onClick(currentLabel);
                         }
+                        if (currentLabel != null) currentLabel.onClick(); // Allow perform click listener for each label
+                        if (mLabelMovingEnabled) currentLabel = null; // delete onClick
                     }
-                    currentLabel = null; // delete onClick
+
                     break;
                 default:
                     break;
