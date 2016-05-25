@@ -1,40 +1,20 @@
 # StickerCamera
 
-Allow sticking and tagging.
+[![JitPack](https://img.shields.io/github/tag/yongjhih/StickerCamera.svg?label=JitPack)](https://jitpack.io/#yongjhih/StickerCamera)
+[![Build Status](https://travis-ci.org/yongjhih/StickerCamera.svg)](https://travis-ci.org/yongjhih/StickerCamera)
 
-图片贴贴图打标签
+Allow sticking and tagging.
 
 ## Feature
 
-- Achieve the function of camera.
-- Achieve the function of photo cropping.
-- Achieve the function of photo filter.
-- Can stick collage on photo (collage can be moved,enlarged, and rotated).
-- Can tag in pictures(also can be moved).
-- Save the completed pictures locally, show more custom views and better framework.
+* Achieve the function of camera.
+* Achieve the function of photo cropping.
+* Achieve the function of photo filter.
+* Can stick collage on photo (collage can be moved,enlarged, and rotated).
+* Can tag in pictures(also can be moved).
+* Save the completed pictures locally, show more custom views and better framework.
 
-
-- 实现相机功能
-- 实现对图片进行裁剪的功能
-- 图片的滤镜功能
-- 能为图片添加贴纸(贴纸可移动,放大,旋转)
-- 能为图片添加标签(同样可以移动)
-- 本地保存制作好的图片,并展示
-- 较多的自定义控件,不错的项目架构
-
-
-  (Translation powered by Amy)
-
-## ScreenShot
-
-<img src="./screenshot/Screenshot_01.gif" width="30%" height="30%">
-<img src="./screenshot/Screenshot_2015-07-19-11-23-22.png" width="30%" height="30%">
-
-<img src="./screenshot/Screenshot_2015-07-19-11-21-39.png" width="30%" height="30%">
-<img src="./screenshot/Screenshot_2015-07-19-11-22-05.png" width="30%" height="30%">
-
-<img src="./screenshot/Screenshot_2015-07-19-11-23-00.png" width="30%" height="30%">
-<img src="./screenshot/Screenshot_2015-07-19-11-23-04.png" width="30%" height="30%">
+ (Translation powered by Amy)
 
 ## Usage
 
