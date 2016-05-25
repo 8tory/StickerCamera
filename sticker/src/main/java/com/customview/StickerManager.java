@@ -264,6 +264,10 @@ public class StickerManager {
         void call(T t, T2 t2, T3 t3);
     }
 
+    public interface Action4<T, T2, T3, T4> {
+        void call(T t, T2 t2, T3 t3, T4 t4);
+    }
+
     public static class SimpleOnEventListener implements MyImageViewDrawableOverlay.OnDrawableEventListener {
         @Override
         public void onMove(MyHighlightView view) {
@@ -363,7 +367,7 @@ public class StickerManager {
     }
 
     public static interface OnAdd {
-        public void onAdd(String id, TagItem tag, int left, int top);
+        public void onAdd(String id, LabelView label, TagItem tag, int left, int top);
     }
 
     public MyHighlightView addSticker(Addon sticker) {
@@ -526,8 +530,8 @@ public class StickerManager {
         //label.onLabelClick(onLabelClick);
         mImageView.addLabelEditable(parent, label, left, top);
         labels.add(label);
-        if (onAdd != null) onAdd.onAdd(mId, tagItem, left, top);
-        if (mOnAdd != null) mOnAdd.onAdd(mId, tagItem, left, top);
+        if (onAdd != null) onAdd.onAdd(mId, label, tagItem, left, top);
+        if (mOnAdd != null) mOnAdd.onAdd(mId, label, tagItem, left, top);
         return tagItem;
     }
 
@@ -546,7 +550,7 @@ public class StickerManager {
         //label.onLabelClick(onLabelClick);
         mImageView.addLabelEditable(parent, label, left, top);
         labels.add(label);
-        if (mOnAdd != null) mOnAdd.onAdd(mId, tagItem, left, top);
+        if (mOnAdd != null) mOnAdd.onAdd(mId, label, tagItem, left, top);
         return tagItem;
     }
 
