@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.android.tools.build:gradle:2.1.0'
         classpath 'me.tatarka:gradle-retrolambda:3.1.0'
     }
 }
@@ -33,9 +33,10 @@ dependencies {
     compile 'com.github.yongjhih:ImageViewZoom:-SNAPSHOT'
 
     compile 'de.greenrobot:eventbus:2.4.0'
-    compile(project(':sticker')) {
-        transitive = true
-    }
+    //compile(project(':sticker')) {
+        //transitive = true
+    //}
+    compile project(':sticker')
     compile 'com.infstory:proguard-snippets:1.0.0'
 }
 
@@ -59,7 +60,7 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), fileTree(dir: '.', include: '*.pro')
         }
     }
 
