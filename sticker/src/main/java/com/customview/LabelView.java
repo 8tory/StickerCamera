@@ -63,8 +63,13 @@ public class LabelView extends LinearLayout {
         }
     }
 
-    public interface OnLabelClickListener {
-        void onClick(LabelView view);
+    public interface OnLabelClickListener extends OnLabelClickListener1 {
+    }
+
+    public interface OnLabelClickListener1 extends OnLabelAction1 {
+    }
+
+    public interface OnLabelClickListener3 extends OnLabelAction3 {
     }
 
     OnLabelClickListener onClick;
@@ -77,20 +82,34 @@ public class LabelView extends LinearLayout {
         this.onClick = onClick;
     }
 
+    public void onClick(OnLabelClickListener onClick) {
+        this.onClick = onClick;
+    }
+
     public interface Action3<T, T2, T3> {
         void call(T t, T2 t2, T3 t3);
     }
 
-    public interface ViewAction<T extends View> extends Action3<T, Integer, Integer> {
+    public interface Action1<T> {
+        void call(T t);
     }
 
-    public interface OnLabelAction extends ViewAction<LabelView> {
+    public interface ViewAction3<T extends View> extends Action3<T, Integer, Integer> {
     }
 
-    public interface OnLabelMoveListener extends OnLabelAction {
+    public interface ViewAction1<T extends View> extends Action1<T> {
     }
 
-    public interface OnLabelUpListener extends OnLabelAction {
+    public interface OnLabelAction3 extends ViewAction3<LabelView> {
+    }
+
+    public interface OnLabelAction1 extends ViewAction1<LabelView> {
+    }
+
+    public interface OnLabelMoveListener extends OnLabelAction3 {
+    }
+
+    public interface OnLabelUpListener extends OnLabelAction3 {
     }
 
     OnLabelMoveListener onMove;
@@ -111,7 +130,7 @@ public class LabelView extends LinearLayout {
 
     public void onClick() {
         if (onClick == null) return;
-        onClick.onClick(this);
+        onClick.call(this);
     }
 
     public void onUp(int x, int y) {
