@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">Settings</string>
-    <string name="comment">Comment</string>
+    <string name="comment">Hashtag</string>
     <string name="place">Place</string>
 </resources>
