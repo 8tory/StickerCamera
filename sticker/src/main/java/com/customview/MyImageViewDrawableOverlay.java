@@ -121,7 +121,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.i(LOG_TAG, "onTouchEvent");
+        Log.i("Log8", "onTouchEvent");
 
         if (currentLabel != null) {
             if (mLabelMovingEnabled) {
@@ -133,12 +133,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_UP:// 手指离开时 
                 case MotionEvent.ACTION_CANCEL:
-                    Log.i(LOG_TAG, "onTouchEvent: up/cancel");
-
-                    if (mDrawableListener != null) {
-                        mDrawableListener.onUp(currentLabel, (int) event.getX(), (int) event.getY());
-                    }
-                    if (currentLabel != null) currentLabel.onUp((int) event.getX(), (int) event.getY());
+                    Log.i("Log8", "onTouchEvent: up/cancel");
 
                     float upX = event.getRawX();
                     float upY = event.getRawY();
@@ -147,13 +142,24 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
                                                 + Math.abs(upY - downLabelY)
                                                 * Math.abs(upY - downLabelY));//两点之间的距离
                     if (distance < 15) { // 距离较小，当作click事件来处理
-                        Log.i(LOG_TAG, "onTouchEvent: click");
+                        Log.i("Log8", "onTouchEvent: click");
                         if (mDrawableListener != null) {
-                            Log.i(LOG_TAG, "onTouchEvent: click label");
+                            Log.i("Log8", "onTouchEvent: click label");
                             mDrawableListener.onClick(currentLabel);
                         }
-                        if (currentLabel != null) currentLabel.onClick(); // Allow perform click listener for each label
-                        if (mLabelMovingEnabled) currentLabel = null; // delete onClick
+                        if (currentLabel != null) {
+                            Log.i("Log8", "onTouchEvent: currentLabel.onClick");
+                            currentLabel.onClick(); // Allow perform click listener for each label
+                        }
+                        if (mLabelMovingEnabled) {
+                            Log.i("Log8", "onTouchEvent: currentLabel := null");
+                            currentLabel = null; // delete onClick
+                        }
+                    } else {
+                        if (mDrawableListener != null) {
+                            mDrawableListener.onUp(currentLabel, (int) event.getX(), (int) event.getY());
+                        }
+                        if (currentLabel != null) currentLabel.onUp((int) event.getX(), (int) event.getY());
                     }
 
                     break;
@@ -334,7 +340,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-        Log.i(LOG_TAG, "onSingleTapConfirmed");
+        Log.i("Log8", "onSingleTapConfirmed");
 
         boolean selected = false;
         // iterate the items and post a single tap event to the selected item
@@ -354,7 +360,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
 
     @Override
     public boolean onDown(MotionEvent e) {
-        Log.i(LOG_TAG, "onDown");
+        Log.i("Log8", "onDown");
 
         mScrollStarted = false;
         mLastMotionScrollX = e.getX();
@@ -377,32 +383,32 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
                 realNewSelection.getCropRectF());
             boolean invalidSize = realNewSelection.getContent().validateSize(displayRect);
 
-            Log.d(LOG_TAG, "invalidSize: " + invalidSize);
+            Log.d("Log8", "invalidSize: " + invalidSize);
 
             if (!invalidSize) {
-                Log.w(LOG_TAG, "drawable too small!!!");
+                Log.w("Log8", "drawable too small!!!");
 
                 float minW = realNewSelection.getContent().getMinWidth();
                 float minH = realNewSelection.getContent().getMinHeight();
 
-                Log.d(LOG_TAG, "minW: " + minW);
-                Log.d(LOG_TAG, "minH: " + minH);
+                Log.d("Log8", "minW: " + minW);
+                Log.d("Log8", "minH: " + minH);
 
                 float minSize = Math.min(minW, minH) * 1.1f;
 
-                Log.d(LOG_TAG, "minSize: " + minSize);
+                Log.d("Log8", "minSize: " + minSize);
 
                 float minRectSize = Math.min(displayRect.width(), displayRect.height());
 
-                Log.d(LOG_TAG, "minRectSize: " + minRectSize);
+                Log.d("Log8", "minRectSize: " + minRectSize);
 
                 float diff = minSize / minRectSize;
 
-                Log.d(LOG_TAG, "diff: " + diff);
+                Log.d("Log8", "diff: " + diff);
 
-                Log.d(LOG_TAG, "min.size: " + minW + "x" + minH);
-                Log.d(LOG_TAG, "cur.size: " + displayRect.width() + "x" + displayRect.height());
-                Log.d(LOG_TAG, "zooming to: " + (getScale() * diff));
+                Log.d("Log8", "min.size: " + minW + "x" + minH);
+                Log.d("Log8", "cur.size: " + displayRect.width() + "x" + displayRect.height());
+                Log.d("Log8", "zooming to: " + (getScale() * diff));
 
                 zoomTo(getScale() * diff, displayRect.centerX(), displayRect.centerY(),
                     DEFAULT_ANIMATION_DURATION * 1.5f);
@@ -437,7 +443,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
 
     @Override
     public boolean onUp(MotionEvent e) {
-        Log.i(LOG_TAG, "onUp");
+        Log.i("Log8", "onUp");
 
         if (mOverlayView != null) {
             mOverlayView.setMode(MyHighlightView.NONE);
@@ -448,28 +454,28 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        Log.i(LOG_TAG, "onSingleTapUp");
+        Log.i("Log8", "onSingleTapUp");
 
         if (mOverlayView != null) {
-            Log.i(LOG_TAG, "onSingleTapUp: mOverlayView != null");
+            Log.i("Log8", "onSingleTapUp: mOverlayView != null");
 
             int edge = mOverlayView.getHit(e.getX(), e.getY());
             if ((edge & MyHighlightView.MOVE) == MyHighlightView.MOVE) {
                 if (mDrawableListener != null) {
-                    Log.i(LOG_TAG, "onSingleTapUp: click");
+                    Log.i("Log8", "onSingleTapUp: click");
                     mDrawableListener.onClick(mOverlayView);
                 }
                 return true;
             }
 
-            Log.i(LOG_TAG, "onSingleTapUp: !MOVE");
+            Log.i("Log8", "onSingleTapUp: !MOVE");
             // cannot avoid setSingleUpListener();
             // if (edge != MyHighlightView.NONE) return true;
 
             mOverlayView.setMode(MyHighlightView.NONE);
             postInvalidate();
 
-            Log.d(LOG_TAG, "selected items: " + mOverlayViews.size());
+            Log.d("Log8", "selected items: " + mOverlayViews.size());
 
             if (mOverlayViews.size() != 1) {
                 setSelectedHighlightView(null);
@@ -487,7 +493,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        Log.i(LOG_TAG, "onScroll");
+        Log.i("Log8", "onScroll");
 
         float dx, dy;
 
@@ -527,7 +533,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        Log.i(LOG_TAG, "onFling");
+        Log.i("Log8", "onFling");
 
         if (mOverlayView != null && mOverlayView.getMode() != MyHighlightView.NONE)
             return false;
@@ -571,7 +577,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
 
     public synchronized void clearOverlays() {
         synchronized (mOverlayViews) {
-        Log.i(LOG_TAG, "clearOverlays");
+        Log.i("Log8", "clearOverlays");
         setSelectedHighlightView(null);
         while (mOverlayViews.size() > 0) {
             MyHighlightView hv = mOverlayViews.remove(0);
@@ -605,7 +611,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
     }
 
     public boolean removeHightlightView(MyHighlightView view) {
-        Log.i(LOG_TAG, "removeHightlightView");
+        Log.i("Log8", "removeHightlightView");
         for (int i = 0; i < mOverlayViews.size(); i++) {
             if (mOverlayViews.get(i).equals(view)) {
                 MyHighlightView hv = mOverlayViews.remove(i);
@@ -621,7 +627,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
 
     @Override
     protected void onZoomAnimationCompleted(float scale) {
-        Log.i(LOG_TAG, "onZoomAnimationCompleted: " + scale);
+        Log.i("Log8", "onZoomAnimationCompleted: " + scale);
         super.onZoomAnimationCompleted(scale);
 
         if (mOverlayView != null) {

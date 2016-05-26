@@ -108,16 +108,23 @@ public class TagItem implements Serializable {
         void call(T t, T2 t2, T3 t3);
     }
 
-    public interface ItemAction<T> extends Action3<T, Double, Double> {
+    public interface Action1<T> {
+        void call(T t);
     }
 
-    public interface OnItemAction extends ItemAction<TagItem> {
+    public interface ItemAction3 extends Action3<TagItem, Double, Double> {
     }
 
-    public interface OnItemMoveListener extends OnItemAction {
+    public interface ItemAction1 extends Action1<TagItem> {
     }
 
-    public interface OnItemUpListener extends OnItemAction {
+    public interface OnItemMoveListener extends ItemAction3 {
+    }
+
+    public interface OnItemUpListener extends ItemAction3 {
+    }
+
+    public interface OnItemRemoveListener extends ItemAction1 {
     }
 
     OnItemMoveListener onMove;
@@ -135,6 +142,18 @@ public class TagItem implements Serializable {
     public void onUp(double x, double y) {
         if (onUp == null) return;
         onUp.call(this, x, y);
+    }
+
+    OnItemRemoveListener onRemove;
+
+    public void onRemove(OnItemRemoveListener onRemove) {
+        this.onRemove = onRemove;
+    }
+
+    public void onRemove() {
+        if (onRemove != null) {
+            onRemove.call(this);
+        }
     }
 
 }

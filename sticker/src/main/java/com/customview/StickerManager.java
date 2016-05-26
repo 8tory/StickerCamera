@@ -179,6 +179,12 @@ public class StickerManager {
                 if (label.equals(emptyLabelView)) {
                     return;
                 }
+                if (label == null) {
+                    return;
+                }
+
+                Log.d("Log8", "OnDrawableEventListener.onClick label.onRemove()");
+                label.onRemove();
                 mImageView.removeLabelEditable(parent, label);
                 labels.remove(label);
             }

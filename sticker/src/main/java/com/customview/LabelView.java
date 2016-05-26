@@ -26,6 +26,7 @@ import com.stickercamera.AppConstants;
 import com.stickercamera.app.camera.util.EffectUtil;
 import com.stickercamera.app.model.TagItem;
 import com.common.util.DistanceUtil;
+import android.util.Log;
 
 
 /**
@@ -153,6 +154,11 @@ public class LabelView extends LinearLayout {
 
     OnLabelUpListener onUp;
 
+    public interface OnLabelRemoveListener extends OnLabelClickListener1 {
+    }
+
+    OnLabelRemoveListener onRemove;
+
     public void onUp(OnLabelUpListener onUp) {
         this.onUp = onUp;
     }
@@ -168,6 +174,20 @@ public class LabelView extends LinearLayout {
         }
         this.tagItem.onUp(EffectUtil.getStandDis(getContext(), left, this.parentWidth),
                 EffectUtil.getStandDis(getContext(), top, this.parentHeight));
+    }
+
+    public void onRemove(OnLabelRemoveListener onRemove) {
+        Log.d("Log8", "LabelView.onRemove := xxx");
+        this.onRemove = onRemove;
+    }
+
+    public void onRemove() {
+        Log.d("Log8", "LabelView.onRemove");
+        if (onRemove != null) {
+            Log.d("Log8", "LabelView.onRemove != null");
+            onRemove.call(this);
+        }
+        tagItem.onRemove();
     }
 
     /**
