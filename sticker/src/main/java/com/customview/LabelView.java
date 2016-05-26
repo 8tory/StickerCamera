@@ -68,8 +68,8 @@ public class LabelView extends LinearLayout {
             labelIcon.setImageResource(R.drawable.point_poi);
         }
 
-        setCornerRadius(labelTxtLeft, 36.0f);
-        setCornerRadius(labelTxtRight, 36.0f);
+        setCornerRadius(labelTxtLeft, 25.0f);
+        setCornerRadius(labelTxtRight, 25.0f);
     }
 
     private void setCornerRadius(final TextView textView, final float radius) {
