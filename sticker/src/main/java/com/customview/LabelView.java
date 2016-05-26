@@ -3,6 +3,12 @@ package com.customview;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Shader;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +67,29 @@ public class LabelView extends LinearLayout {
         if (this.tagItem.getType() == AppConstants.POST_TYPE_POI) {
             labelIcon.setImageResource(R.drawable.point_poi);
         }
+
+        setCornerRadius(labelTxtLeft, 36.0f);
+        setCornerRadius(labelTxtRight, 36.0f);
+    }
+
+    private void setCornerRadius(final TextView textView, final float radius) {
+        textView.measure(0, 0);
+        final int width = textView.getMeasuredWidth();
+        final int height = textView.getMeasuredHeight();
+
+        final BitmapDrawable drawable = (BitmapDrawable) textView.getBackground();
+        drawable.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+
+        final Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bitmap);
+        final TextView tv = new TextView(getContext());
+        tv.layout(0, 0, width, height);
+        tv.setBackground(drawable);
+        tv.draw(canvas);
+
+        final RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+        roundedBitmapDrawable.setCornerRadius(radius);
+        textView.setBackground(roundedBitmapDrawable);
     }
 
     public interface OnLabelClickListener extends OnLabelClickListener1 {

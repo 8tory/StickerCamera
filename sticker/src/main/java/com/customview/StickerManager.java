@@ -127,7 +127,7 @@ public class StickerManager {
                 .title(R.string.comment)
                 //.inputRangeRes(2, 20, R.color.material_red_500)
                 .inputType(InputType.TYPE_CLASS_TEXT)
-                .input("Say something..", "", new MaterialDialog.InputCallback() {
+                .input("#Hashtag", "#", new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
                         TagItem tagItem = new TagItem(0, input.toString());
@@ -140,7 +140,7 @@ public class StickerManager {
                 .title(R.string.place)
                 //.inputRangeRes(2, 20, R.color.material_red_500)
                 .inputType(InputType.TYPE_CLASS_TEXT)
-                .input("Place", "", new MaterialDialog.InputCallback() {
+                .input("#Place", "#", new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
                         TagItem tagItem = new TagItem(1, input.toString());
