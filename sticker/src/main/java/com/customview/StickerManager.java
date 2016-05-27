@@ -430,6 +430,10 @@ public class StickerManager {
         emptyLabelView.setVisibility(View.VISIBLE);
     }
 
+    public void addLabel(int id) {
+        labelSelector.showToTop();
+    }
+
     public void addLabel() {
         labelSelector.showToTop();
     }
