@@ -2,6 +2,7 @@
 
 [![JitPack](https://img.shields.io/github/tag/yongjhih/StickerCamera.svg?label=JitPack)](https://jitpack.io/#yongjhih/StickerCamera)
 [![Build Status](https://travis-ci.org/yongjhih/StickerCamera.svg)](https://travis-ci.org/yongjhih/StickerCamera)
+[![javadoc](https://img.shields.io/github/tag/yongjhih/StickerCamera.svg?label=javadoc)](https://jitpack.io/com/github/yongjhih/StickerCamera/-SNAPSHOT/javadoc/)
 
 Allow sticking and tagging.
 
