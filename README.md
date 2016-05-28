@@ -4,6 +4,8 @@
 [![Build Status](https://travis-ci.org/yongjhih/StickerCamera.svg)](https://travis-ci.org/yongjhih/StickerCamera)
 [![javadoc](https://img.shields.io/github/tag/yongjhih/StickerCamera.svg?label=javadoc)](https://jitpack.io/com/github/yongjhih/StickerCamera/-SNAPSHOT/javadoc/)
 
+![](art/StickerCamera.png)
+
 Allow sticking and tagging.
 
 ## Feature
