@@ -274,7 +274,7 @@ public class StickerManager {
         void call(T t, T2 t2, T3 t3, T4 t4);
     }
 
-    public static class SimpleOnEventListener implements MyImageViewDrawableOverlay.OnDrawableEventListener {
+    public static class SimpleOnEventListener extends MyImageViewDrawableOverlay.OnDrawableEventListener {
         @Override
         public void onMove(MyHighlightView view) {
             Log.d("Log8", "SimpleOnDrawableEventListener.onMove");

@@ -26,10 +26,11 @@ import com.stickercamera.app.camera.util.MatrixUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.CallSuper;
 
 public class MyImageViewDrawableOverlay extends ImageViewTouch {
 
-    public static interface OnDrawableEventListener {
+    public static interface IOnDrawableEventListener {
         void onFocusChange(MyHighlightView newFocus, MyHighlightView oldFocus);
 
         void onDown(MyHighlightView view);
@@ -42,6 +43,46 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
         void onClick(final LabelView label);
 
         void onUp(final LabelView label, Integer x, Integer y);
+    };
+
+    public static class OnDrawableEventListener implements IOnDrawableEventListener {
+        @Override
+        public void onFocusChange(MyHighlightView newFocus, MyHighlightView oldFocus) {
+        }
+
+        @Override
+        public void onDown(MyHighlightView view) {
+        }
+
+        @Override
+        public void onMove(MyHighlightView view) {
+        }
+
+        @CallSuper
+        public void onMove(MyHighlightView view, float x, float y) {
+            onMove(view);
+        }
+
+        @Override
+        public void onClick(MyHighlightView view) {
+        }
+
+        @CallSuper
+        public void onClick(MyHighlightView view, float x, float y) {
+            onClick(view);
+        }
+
+        // TODO: NOT IMPL, NEVER CALALED
+        public void onUp(MyHighlightView view, float x, float y) {
+        }
+
+        @Override
+        public void onClick(final LabelView label) {
+        }
+
+        @Override
+        public void onUp(final LabelView label, Integer x, Integer y) {
+        }
     };
 
     //删除的时候会出错
@@ -517,7 +558,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
             postInvalidate();
 
             if (mDrawableListener != null) {
-                mDrawableListener.onMove(mOverlayView);
+                mDrawableListener.onMove(mOverlayView, mLastMotionScrollX, mLastMotionScrollY);
             }
 
             if (mOverlayView.getMode() == MyHighlightView.MOVE) {
