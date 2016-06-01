@@ -170,7 +170,7 @@ public class StickerManager {
             public void onClick(MyHighlightView view) {
                 Log.d("Log8", "OnDrawableEventListener.onClick view");
                 labelSelector.hide();
-                //mImageView.removeSticker(view); // deleteIcon instead
+                //mImageView.removeSticker(view); // via deleteIcon instead
             }
 
             @Override
@@ -364,32 +364,43 @@ public class StickerManager {
     }
 
     public MyHighlightView addSticker(@DrawableRes int drawableId) {
-        return addSticker(new Addon(drawableId));
+        return addSticker(drawableId, new SimpleOnDeleteSticker());
     }
 
-    //删除贴纸的回调接口
-    public static interface StickerCallback {
-        public void onRemoveSticker(Addon sticker);
+    public MyHighlightView addSticker(@DrawableRes int drawableId, final OnDeleteSticker onDelete) {
+        return addSticker(new Addon(drawableId), onDelete);
+    }
+
+    public static interface OnDeleteSticker extends Action1<Addon> {
+        public void call(Addon sticker);
     }
 
     public static interface OnAdd {
         public void onAdd(String id, LabelView label, TagItem tag, int left, int top);
     }
 
-    public MyHighlightView addSticker(Addon sticker) {
-        return addSticker(sticker, new StickerCallback() {
-            @Override
-            public void onRemoveSticker(Addon sticker) {
-                labelSelector.hide();
-            }
-        });
+    public static class SimpleOnDeleteSticker implements OnDeleteSticker {
+        @Override public void call(Addon sticker) {
+            // do nothing
+        }
     }
 
-    public MyHighlightView addSticker(final Addon sticker, final StickerCallback stickerCallback) {
+    OnDeleteSticker mLabelOnDeleteSticker = new OnDeleteSticker() {
+        @Override public void call(Addon sticker) {
+            labelSelector.hide();
+        }
+    };
+
+    public MyHighlightView addSticker(Addon sticker) {
+        return addSticker(sticker, new SimpleOnDeleteSticker());
+    }
+
+    public MyHighlightView addSticker(final Addon sticker, final OnDeleteSticker onDelete) {
         return mImageView.addSticker(sticker.getId(), new MyHighlightView.OnDeleteClickListener() {
             @Override
             public void onDeleteClick() {
-                stickerCallback.onRemoveSticker(sticker);
+                mLabelOnDeleteSticker.call(sticker);
+                onDelete.call(sticker);
             }
         });
     }
