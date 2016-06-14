@@ -5,11 +5,14 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,9 +72,24 @@ public class LabelView extends LinearLayout {
             labelIcon.setImageResource(R.drawable.point_poi);
         }
 
-        setCornerRadius(labelTxtLeft, 25.0f);
-        setCornerRadius(labelTxtRight, 25.0f);
+        setCornerRadius(labelTxtLeft, 43.0f);
+        setCornerRadius(labelTxtRight, 43.0f);
     }
+
+
+    public void setStyle(int choice) {
+        if (choice == 3) {
+            labelTxtLeft.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+            labelTxtRight.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+            labelTxtLeft.setTextColor(Color.parseColor("#f0f543"));
+            labelTxtRight.setTextColor(Color.parseColor("#f0f543"));
+            labelTxtLeft.setTypeface(Typeface.create("sans-serif-condensed", Typeface.BOLD));
+            labelTxtRight.setTypeface(Typeface.create("sans-serif-condensed", Typeface.BOLD));
+            labelTxtLeft.setBackgroundResource(R.drawable.tag_background_transparent);
+            labelTxtRight.setBackgroundResource(R.drawable.tag_background_transparent);
+        }
+    }
+
 
     private void setCornerRadius(final TextView textView, final float radius) {
         textView.measure(0, 0);

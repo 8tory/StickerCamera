@@ -69,6 +69,8 @@ public class StickerManager {
     private String mId;
     private OnAdd mOnAdd;
 
+    private int tagNumber = 0;
+
     // TODO merge into Overlay
     private List<LabelView> labels = new ArrayList<LabelView>();
 
@@ -442,10 +444,12 @@ public class StickerManager {
     }
 
     public void addLabel(int id) {
+        tagNumber = id;
         labelSelector.showToTop();
     }
 
     public void addLabel() {
+        tagNumber = 0;
         labelSelector.showToTop();
     }
 
@@ -548,6 +552,7 @@ public class StickerManager {
         }
         LabelView label = new LabelView(parent.getContext());
         label.init(tagItem);
+        label.setStyle(tagNumber);
         //label.onLabelClick(onLabelClick);
         mImageView.addLabelEditable(parent, label, left, top);
         labels.add(label);
@@ -568,6 +573,7 @@ public class StickerManager {
         }
         LabelView label = new LabelView(parent.getContext());
         label.init(tagItem);
+        label.setStyle(tagNumber);
         //label.onLabelClick(onLabelClick);
         mImageView.addLabelEditable(parent, label, left, top);
         labels.add(label);
