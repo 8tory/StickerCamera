@@ -192,10 +192,6 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
                             Log.i("Log8", "onTouchEvent: currentLabel.onClick");
                             currentLabel.onClick(); // Allow perform click listener for each label
                         }
-                        if (mLabelMovingEnabled) {
-                            Log.i("Log8", "onTouchEvent: currentLabel := null");
-                            currentLabel = null; // delete onClick
-                        }
                     } else {
                         if (mDrawableListener != null) {
                             mDrawableListener.onUp(currentLabel, (int) event.getX(), (int) event.getY());
@@ -203,6 +199,10 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
                         if (currentLabel != null) currentLabel.onUp((int) event.getX(), (int) event.getY());
                     }
 
+                    if (mLabelMovingEnabled) {
+                        Log.i("Log8", "onTouchEvent: currentLabel := null");
+                        currentLabel = null; // delete onClick
+                    }
                     break;
                 default:
                     break;
