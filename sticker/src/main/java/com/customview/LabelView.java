@@ -226,11 +226,13 @@ public class LabelView extends LinearLayout {
             labelTxtRight.setVisibility(View.VISIBLE);
             labelTxtLeft.setVisibility(View.GONE);
             setupLocation(left, top);
+            android.util.Log.d("Log8", "LabelView.draw: " + left + ", " + top);
             parent.addView(this);
         } else {
             labelTxtRight.setVisibility(View.GONE);
             labelTxtLeft.setVisibility(View.VISIBLE);
             setupLocation(left, top);
+            android.util.Log.d("Log8", "LabelView.draw: " + left + ", " + top);
             parent.addView(this);
         }
 
@@ -287,27 +289,35 @@ public class LabelView extends LinearLayout {
         android.util.Log.d("Log8", "LabelView.setupLocation: posChanged: " + posChanged);
         this.left = leftLoc;
         this.top = topLoc;
+        android.util.Log.d("Log8", "LabelView.setupLocation: " + left + ", " + top);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
         if (getImageWidth() - left - getWidth() < 0) {
+            android.util.Log.d("Log8", "LabelView.setupLocation: over-left");
             left = getImageWidth() - getWidth();
         }
         if (getImageWidth() - top - getHeight() < 0) {
+            android.util.Log.d("Log8", "LabelView.setupLocation: over-top");
             top = getImageWidth() - getHeight();
         }
         if (left < 0 && top < 0) {
+            android.util.Log.d("Log8", "LabelView.setupLocation: center for unknown position");
             params.addRule(RelativeLayout.CENTER_IN_PARENT);
         } else if (left < 0) {
+            android.util.Log.d("Log8", "LabelView.setupLocation: center-horizontal for unknown left position");
             params.addRule(RelativeLayout.CENTER_HORIZONTAL);
             params.setMargins(0, top, 0, 0);
         } else if (top < 0) {
+            android.util.Log.d("Log8", "LabelView.setupLocation: center-vertical for unknown top position");
             params.addRule(RelativeLayout.CENTER_VERTICAL);
             params.setMargins(left, 0, 0, 0);
         } else {
+            android.util.Log.d("Log8", "LabelView.setupLocation: margins position for known left-top position");
             params.setMargins(left, top, 0, 0);
         }
+        android.util.Log.d("Log8", "LabelView.setupLocation: " + left + ", " + top);
 
         this.tagItem.setPosition(EffectUtil.getStandDis(getContext(), left, this.parentWidth),
                 EffectUtil.getStandDis(getContext(), top, this.parentHeight));
@@ -352,6 +362,7 @@ public class LabelView extends LinearLayout {
 
     public void updateLocation(int x, int y) {
         android.util.Log.d("Log8", "LabelView.updateLocation: ");
+        android.util.Log.d("Log8", "LabelView.updateLocation: " + x + ", " + y);
         x = x < 0 ? 0 : x;
         y = y < 0 ? 0 : y;
         setupLocation(x, y);

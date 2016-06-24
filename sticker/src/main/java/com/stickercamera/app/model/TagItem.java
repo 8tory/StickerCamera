@@ -97,6 +97,7 @@ public class TagItem implements Serializable {
         this.y = y;
         android.util.Log.d("Log8", "TagItem.setPosition: onMove: " + onMove);
         android.util.Log.d("Log8", "TagItem.setPosition: this: " + this);
+        android.util.Log.d("Log8", "TagItem.setPosition: " + x + ", " + y);
         if (posChanged && onMove != null) {
             android.util.Log.d("Log8", "TagItem.setPosition: onMove: " + x);
             android.util.Log.d("Log8", "TagItem.setPosition: onMove: " + y);
