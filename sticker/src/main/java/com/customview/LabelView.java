@@ -26,7 +26,6 @@ import android.widget.TextView;
 
 import com.github.skykai.stickercamera.R;
 import com.stickercamera.AppConstants;
-import com.stickercamera.app.camera.util.EffectUtil;
 import com.stickercamera.app.model.TagItem;
 import com.common.util.DistanceUtil;
 import android.util.Log;
@@ -190,8 +189,7 @@ public class LabelView extends LinearLayout {
         if (onUp != null) {
             onUp.call(this, x, y);
         }
-        this.tagItem.onUp(EffectUtil.getStandDis(getContext(), left, this.parentWidth),
-                EffectUtil.getStandDis(getContext(), top, this.parentHeight));
+        this.tagItem.onUp(x, y);
     }
 
     public void onRemove(OnLabelRemoveListener onRemove) {
@@ -246,9 +244,6 @@ public class LabelView extends LinearLayout {
      * @param top
      */
     public void addTo(ViewGroup parent, final int left, final int top) {
-        if (left > parent.getWidth() / 2) {
-            this.tagItem.setLeft(false);
-        }
         this.parentWidth = parent.getWidth();
         if (parentWidth <= 0) {
             parentWidth = DistanceUtil.getInstance(getContext()).getScreenWidth();
@@ -319,11 +314,22 @@ public class LabelView extends LinearLayout {
         }
         android.util.Log.d("Log8", "LabelView.setupLocation: " + left + ", " + top);
 
-        this.tagItem.setPosition(EffectUtil.getStandDis(getContext(), left, this.parentWidth),
-                EffectUtil.getStandDis(getContext(), top, this.parentHeight));
+        this.tagItem.setPosition(left, top);
         setLayoutParams(params);
         if (onMove != null) onMove.call(this, left, top);
     }
+
+    // Add
+    //Manager.addLabel(label, x, y -> label.addTo(x, y))
+    //.flatMap(label, x, y -> label.setupLocation(x, y))
+    //.flatMap(item, x, y -> item.setPosition(effect(x, y)));
+
+    // onUp and save
+    //overlay.onUp(x, y)
+    //    .flatMap(label, x, y -> label.onUp(x, y))
+    //    .flatMap(item, x, y -> item.onUp(effect(x, y)))
+    //    .flatMap(item -> Parse.save(item.x, item.y))
+
 
     private void setImageWidth(int width) {
         this.imageWidth = width;

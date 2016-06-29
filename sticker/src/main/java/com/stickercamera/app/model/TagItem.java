@@ -9,8 +9,8 @@ public class TagItem implements Serializable {
     private long              id;
     private int               type;
     private String            name;
-    private double            x                = -1;
-    private double            y                = -1;
+    private int            x                = -1;
+    private int            y                = -1;
 
     private int recordCount;
     private boolean           left             = true;
@@ -63,33 +63,33 @@ public class TagItem implements Serializable {
         this.name = name;
     }
 
-    public double getX() {
+    public int getX() {
         return x;
     }
 
     /**
      * DONT setX && setY(), setPosition(x, y) instead for OnMoveListener.call(x, y)
      */
-    public void setX(double x) {
+    public void setX(int x) {
         boolean posChanged = !(this.x == x);
         this.x = x;
         if (posChanged && onMove != null) onMove.call(this, x, y);
     }
 
-    public double getY() {
+    public int getY() {
         return y;
     }
 
     /**
      * DONT setX && setY(), setPosition(x, y) instead for OnMoveListener.call(x, y)
      */
-    public void setY(double y) {
+    public void setY(int y) {
         boolean posChanged = !(this.y == y);
         this.y = y;
         if (posChanged && onMove != null) onMove.call(this, x, y);
     }
 
-    public void setPosition(double x, double y) {
+    public void setPosition(int x, int y) {
         android.util.Log.d("Log8", "TagItem.setPosition:");
         boolean posChanged = !(this.x == x && this.y == y);
         android.util.Log.d("Log8", "TagItem.setPosition: posChanged: " + posChanged);
@@ -113,7 +113,7 @@ public class TagItem implements Serializable {
         void call(T t);
     }
 
-    public interface ItemAction3 extends Action3<TagItem, Double, Double> {
+    public interface ItemAction3 extends Action3<TagItem, Integer, Integer> {
     }
 
     public interface ItemAction1 extends Action1<TagItem> {
@@ -140,7 +140,7 @@ public class TagItem implements Serializable {
         this.onUp = onUp;
     }
 
-    public void onUp(double x, double y) {
+    public void onUp(int x, int y) {
         if (onUp == null) return;
         onUp.call(this, x, y);
     }
